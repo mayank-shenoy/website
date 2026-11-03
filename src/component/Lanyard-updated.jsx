@@ -722,6 +722,7 @@ const Lanyard = ({
   breeze = 0.5,
   interactive = true,
   intro = true,
+  paused = false,
   className = '',
   style
 }) => {
@@ -749,7 +750,8 @@ const Lanyard = ({
     elasticity,
     breeze,
     interactive,
-    intro
+    intro,
+    paused
   };
 
   useEffect(() => {
@@ -1135,7 +1137,9 @@ const Lanyard = ({
       last = now;
       time += dt;
       const current = physics();
-      stepSimulation(sim, dt, current, time);
+      if (!settingsRef.current.paused) {
+        stepSimulation(sim, dt, current, time);
+      }
       const body = sim.body;
       if (!Number.isFinite(body.position.x + body.position.y + body.position.z + body.quaternion.w)) {
         sim.grab = null;

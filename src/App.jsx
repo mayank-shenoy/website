@@ -1,9 +1,15 @@
 import headshot from './assets/photo.jpg';
-import Lanyard from './component/Lanyard';
-import { useEffect, useRef } from 'react';
+import Lanyard from './component/Lanyard-updated';
+import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong } from 'react-icons/fa6';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger, SplitText } from 'gsap/all';
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 function App() {
+  const [releaseLanyard, setReleaseLanyard] = useState(false);
   const heroRef = useRef(null);
   const lanyardRef = useRef(null);
   const sidebarRef = useRef(null);
@@ -46,21 +52,62 @@ function App() {
       window.removeEventListener('scroll', changeWidth);
     };
   }, []);
+
+  useGSAP(() => {
+    const lanyard = lanyardRef.current;
+    const first = document.getElementById('first');
+    const shiftx = first.getBoundingClientRect().width;
+    const shifty = first.getBoundingClientRect().height;
+    const secondSplit = new SplitText(document.getElementById('second'), { type: 'chars', deepSlice: true });
+
+    const tl = gsap.timeline();
+
+    tl.fromTo(titleRef.current, {
+      x: -0.5 * shiftx,
+      y:  shifty,
+      opacity: 0,
+    }, {
+      x: -0.5 * shiftx,
+      y: 0,
+      opacity: 1,
+      duration: 0.75,
+      ease: 'back.out',
+    })
+
+    tl.to(titleRef.current, {
+      x: 0,
+      duration: 0.75,
+      ease: 'power2.out',
+    }, 1.25);
+
+    tl.from(secondSplit.chars, {
+      yPercent: 50,
+      opacity: 0,
+      duration: 0.25,
+      stagger: 0.02,
+    }, 2.25);
+
+    tl.add(() => {
+      setReleaseLanyard(true);
+      lanyard.classList.remove('invisible');
+    }, 2.75);
+
+    return () => secondSplit.revert();
+  }, []);
   
 
   return (
     <>
       <div className="hero" id="hero" ref={heroRef}>
-        <div className="lanyard-container" ref={lanyardRef}>
-          <Lanyard id="lanyard"
+        <div className="lanyard-container invisible" ref={lanyardRef}>
+          <Lanyard id="lanyard" ref={lanyardRef}
             frontImage={headshot}
             imageFit="contain"
             cardColor="#f3f1eb"
             orientation="portrait"
-            finish="holographic"
+            finish="glossy"
             cornerRadius={0.25}
             size={0.65}
-            // anchor="left"
             strapLength={0.2}
             strapColor="#000000"
             strapWidth={0.75}
@@ -71,18 +118,25 @@ function App() {
             breeze={1}
             interactive
             intro
+            paused={!releaseLanyard}
           />
         </div>
-        <h1 ref={titleRef}>Hello! I am <br/> Mayank Shenoy</h1>
+        <h1 ref={titleRef}>
+          <span id="first">Hello! </span>
+          <span id="second">
+            I am 
+            <br />
+            <em>Mayank Shenoy</em>
+          </span>
+        </h1>
       </div>
 
       <div className="sidebar" id="sidebar" ref={sidebarRef}>
         <div className="header">
-          {/* <img src={headshot} alt="Mayank Shenoy" /> */}
-          <h2>Mayank Shenoy</h2>
+          <h2>Mayank<br/>Shenoy</h2>
         </div>
         <nav className="toc">
-          <a href="#introduction">Introduction </a>
+          <a href="#introduction">Who am I?</a>
           <a href="#research">Research </a>
           <a href="#talks-papers">Talks & Papers </a>
           <a href="#academic-journey">Academic Journey </a>
@@ -90,17 +144,17 @@ function App() {
         </nav>
         <div className="footer">
           <div className="icon-links">
-            <a href="github.com/mayankshenoy" target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-github"></i>
+            <a href="https://github.com/mayank-shenoy" target="_blank" rel="noopener noreferrer">
+              <FaGithub className="social-icon" />
             </a>
-            <a href="orcid.org/0000-0002-1234-5678" target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-orcid"></i>
+            <a href="https://orcid.org/0000-0002-1234-5678" target="_blank" rel="noopener noreferrer">
+              <FaOrcid className="social-icon"/>
             </a>
-            <a href="linkedin.com/in/mayankshenoy" target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-linkedin"></i>
+            <a href="https://linkedin.com/in/mayankshenoy" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin className="social-icon" />
             </a>
             <a href="mailto:mayankshenoy@example.com" target="_blank" rel="noopener noreferrer">
-              <i className="fas fa-envelope"></i>
+              <FaEnvelope className="social-icon"/>
             </a>
           </div>
           &copy; Mayank Shenoy <br />
@@ -111,7 +165,19 @@ function App() {
       <main>
           <div className="blank"></div>
           <div className="section" id="introduction">
+            <p className="tag">01/05</p>
             <h2>Who am I?</h2>
+            <p>
+              I am a computational astrophysicist and graduate student at Imperial College London, where I'm finishing my 
+							MSc in Physics. I earned my Honours BSc in Astronomy and Physics from the University of Toronto in 2024. I am interested
+							in exploring the physics of some of the most extreme environments in the universe by using large-scale simulations of 
+							observational targets like Sagittarius A* or localised box simulations based on what we observe from them, here on Earth.
+            </p>
+            <p>
+              In my free time, you will find me listening to metal or reggaeton, supporting Barcelona, and just occasionally glazing 
+							Messi.
+            </p>
+            <a className="button">Read my CV<span><FaArrowRightLong /></span></a>
           </div>
 
           <div className="section" id="research">
