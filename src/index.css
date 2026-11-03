@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Oswald:wght@200..700&display=swap');
+
+:root {
+    --blue: #004d98;
+    --red: #a50044;
+    --gold: #edbb00;
+
+    --header: #121113;
+    --header_text: #f7f7f2; 
+
+    --bg: #f7f7f2;
+    --bg_text: #121113;
+    --bg_accent: #e8e8d9;
+}
+
+[data-theme="dark"] {
+    --bg: #201e20;
+    --bg_text: #f7f7f2;
+    --bg_accent: #2a282a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+}
+
+main {
+  margin-left: 25%;
+  padding: 4rem;
+}
