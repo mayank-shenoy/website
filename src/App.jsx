@@ -1,12 +1,14 @@
 import headshot from './assets/photo.jpg';
 import Lanyard from './component/Lanyard-updated';
-import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong } from 'react-icons/fa6';
+import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong, FaChevronDown } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger, SplitText } from 'gsap/all';
-gsap.registerPlugin(ScrollTrigger, SplitText);
+import { ScrollTrigger, SplitText, ScrambleTextPlugin } from 'gsap/all';
+import { max } from 'three/tsl';
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
+
 
 function App() {
   const [releaseLanyard, setReleaseLanyard] = useState(false);
@@ -14,51 +16,15 @@ function App() {
   const lanyardRef = useRef(null);
   const sidebarRef = useRef(null);
   const titleRef = useRef(null);
-
-  useEffect(() => {
-    const hero = heroRef.current;
-    const lanyard = lanyardRef.current;
-    const sidebar = sidebarRef.current;
-    const title = titleRef.current;
-
-    function changeWidth() {
-      // const scroll = window.scrollY;
-      const scroll = Math.min(window.scrollY / window.innerHeight, 1)
-      // const height = Math.min(Math.max(25-scroll/2, -100), 0);
-      const height = Math.min(0, 25 - 125*scroll)
-      const width = 100 - 75 * scroll;
-      // const width = Math.max(25, 100 - scroll/4);
-
-      hero.style.width = `${width}%`;
-      lanyard.style.top = `${height}%`;
-
-      if (width <= 40) {
-        sidebar.classList.add('visible');
-      } else {
-        sidebar.classList.remove('visible');
-      }
-
-      if (width <= 50) {
-        title.classList.add('invisible');
-      } else {
-        title.classList.remove('invisible');
-      }
-    }
-
-    window.addEventListener('scroll', changeWidth);
-    changeWidth();
-
-    return () => {
-      window.removeEventListener('scroll', changeWidth);
-    };
-  }, []);
+  const headerRef = useRef(null);
+  const tocRef = useRef(null);
+  const footerRef = useRef(null);
 
   useGSAP(() => {
     const lanyard = lanyardRef.current;
     const first = document.getElementById('first');
     const shiftx = first.getBoundingClientRect().width;
     const shifty = first.getBoundingClientRect().height;
-    const secondSplit = new SplitText(document.getElementById('second'), { type: 'chars', deepSlice: true });
 
     const tl = gsap.timeline();
 
@@ -78,71 +44,196 @@ function App() {
       x: 0,
       duration: 0.75,
       ease: 'power2.out',
-    }, 1.25);
+    }, 1);
 
-    tl.from(secondSplit.chars, {
-      yPercent: 50,
-      opacity: 0,
-      duration: 0.25,
-      stagger: 0.02,
-    }, 2.25);
+    const secondSplit = SplitText.create('#second', {
+      type: 'chars',
+      autoSplit: true,
+      onSplit(self) {
+        const n = self.chars.length;
+        const gap = 0.5 / (n - 2);
+
+        return gsap.from(self.chars, {
+          yPercent: 25,
+          opacity: 0,
+          duration: 3*gap,
+          ease: 'power2.out',
+          stagger: gap,
+          delay: 2,
+        });
+      },
+    });
 
     tl.add(() => {
       setReleaseLanyard(true);
-      lanyard.classList.remove('invisible');
-    }, 2.75);
+    }, 2.4);
 
-    return () => secondSplit.revert();
+    tl.add(() => {
+      lanyard.classList.remove('invisible');
+    }, 2.5);
+
+    return () => {
+      secondSplit.revert();
+      tl.kill();
+    };
+  }, []);
+
+  useGSAP(() => {
+    const headerSplit = new SplitText(headerRef.current, {type: 'chars'});
+    gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0 });
+    gsap.set('.toc > *', { opacity: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        start: 0,
+        end: () => window.innerHeight,
+        scrub: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          console.log(self.progress);
+          titleRef.current.classList.toggle('invisible', self.progress >= 0.56);
+        },
+      },   
+    });
+
+    tl.to(heroRef.current, {
+      width: '25%',
+      '--pos': '100%',
+      duration: 1,
+      ease: 'power2.inOut',
+    });
+
+    tl.to(lanyardRef.current, {
+      top: '-100%',
+      duration: 0.5,
+      ease: 'expo.in',
+    }, 0.25);
+
+    const tl2 = gsap.timeline({ paused: true });
+    tl2.to(headerSplit.chars, {
+      yPercent: 0,
+      opacity: 1,
+      duration: 3*0.25/13,
+      ease: 'power2.out',
+      stagger: 0.25/13,
+    }, 0);
+
+    tl2.to("#introduction-link", {
+      scrambleText: {
+        text: "Who am I?",
+        revealDelay: 0.15,
+      },
+      opacity: 1,
+      duration: 0.25,
+      ease: 'none',
+    })
+      .to("#research-link", {
+      scrambleText: {
+        text: "Research",
+        revealDelay: 0.15,
+      },
+      opacity: 1,
+      duration: 0.25,
+      ease: 'none',
+    })
+      .to("#talks-papers-link", {
+      scrambleText: {
+        text: "Talks & Papers",
+        revealDelay: 0.15,
+      },
+      opacity: 1,
+      duration: 0.25,
+      ease: 'none',
+    })
+      .to("#academic-journey-link", {
+      scrambleText: {
+        text: "Academic Journey",
+        revealDelay: 0.15,
+      },
+      opacity: 1,
+      duration: 0.25,
+      ease: 'none',
+    })
+      .to("#certifications-link", {
+      scrambleText: {
+        text: "Certifications",
+        revealDelay: 0.15,
+      },
+      opacity: 1,
+      duration: 0.25,
+      ease: 'none',
+    });
+
+    tl2.from(footerRef.current, {
+      yPercent: 25,
+      opacity: 0,
+      duration: 0.25,
+      ease: 'power2.out',
+    },0);
+
+    ScrollTrigger.create({
+      start: () => window.innerHeight*0.75,
+      end: 'max',
+      invalidateOnRefresh: true,
+      onEnter: () => tl2.timeScale(1).play(),
+      onLeaveBack: () => tl2.timeScale(3).reverse(),
+    });
+    
+    return () => {
+      headerSplit.revert();
+      tl.kill();
+    };
   }, []);
   
 
   return (
     <>
+      <div className="lanyard-container invisible" ref={lanyardRef}>
+        <Lanyard id="lanyard" ref={lanyardRef}
+          frontImage={headshot}
+          imageFit="contain"
+          cardColor="#f3f1eb"
+          orientation="portrait"
+          finish="glossy"
+          cornerRadius={0.25}
+          size={0.65}
+          strapLength={0.2}
+          strapColor="#000000"
+          strapWidth={0.75}
+          metal="silver"
+          gravity={1}
+          damping={0.6}
+          elasticity={0.4}
+          breeze={1}
+          interactive
+          intro
+          paused={!releaseLanyard}
+        />
+      </div>
       <div className="hero" id="hero" ref={heroRef}>
-        <div className="lanyard-container invisible" ref={lanyardRef}>
-          <Lanyard id="lanyard" ref={lanyardRef}
-            frontImage={headshot}
-            imageFit="contain"
-            cardColor="#f3f1eb"
-            orientation="portrait"
-            finish="glossy"
-            cornerRadius={0.25}
-            size={0.65}
-            strapLength={0.2}
-            strapColor="#000000"
-            strapWidth={0.75}
-            metal="silver"
-            gravity={1}
-            damping={0.6}
-            elasticity={0.4}
-            breeze={1}
-            interactive
-            intro
-            paused={!releaseLanyard}
-          />
-        </div>
         <h1 ref={titleRef}>
           <span id="first">Hello! </span>
           <span id="second">
-            I am 
-            <br />
-            <em>Mayank Shenoy</em>
+            I am <br /><em>Mayank Shenoy</em>
           </span>
         </h1>
+        {/* <a href="#introduction" className="scroll-icon"><FaChevronDown /></a> */}
       </div>
 
       <div className="sidebar" id="sidebar" ref={sidebarRef}>
-        <div className="header">
-          <h2>Mayank<br/>Shenoy</h2>
+        <div className="header" ref={headerRef}>
+          <h2><a href="#top" onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });}}>Mayank<br/>Shenoy</a></h2>
         </div>
-        <nav className="toc">
-          <a href="#introduction">Who am I?</a>
-          <a href="#research">Research </a>
-          <a href="#talks-papers">Talks & Papers </a>
-          <a href="#academic-journey">Academic Journey </a>
-          <a href="#certifications">Certifications </a>
+        <nav className="toc" ref={tocRef}>
+          <a href="#introduction" id="introduction-link">Who am I?</a>
+          <a href="#research" id="research-link">Research </a>
+          <a href="#talks-papers" id="talks-papers-link">Talks & Papers </a>
+          <a href="#academic-journey" id="academic-journey-link">Academic Journey </a>
+          <a href="#certifications" id="certifications-link">Certifications </a>
         </nav>
-        <div className="footer">
+        <div className="footer" ref={footerRef}>
           <div className="icon-links">
             <a href="https://github.com/mayank-shenoy" target="_blank" rel="noopener noreferrer">
               <FaGithub className="social-icon" />

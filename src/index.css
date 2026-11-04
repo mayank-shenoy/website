@@ -7,7 +7,7 @@
 
     --header: #121113;
     --header-text: #f7f7f2; 
-    --header-accent: #f7f7f280;
+    --header-accent: #2a282a;
 
     --bg: #f7f7f2;
     --bg-text: #121113;
@@ -37,4 +37,9 @@ main {
 
 em {
   font-style: italic;
+}
+
+a {
+  color: inherit;            
+  text-decoration: none;    
 }
