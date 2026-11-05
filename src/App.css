@@ -1,3 +1,17 @@
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  pointer-events: none;
+
+  opacity: 0.025;
+
+  background-image: url("../public/noise.avif");
+  background-size: cover;
+  mix-blend-mode: difference;
+}
+
 .hero {
   --pos: 50%;
 
@@ -62,7 +76,6 @@
 }
 
 .invisible {
-  opacity: 0;
   visibility: hidden;
 }
 
@@ -226,8 +239,26 @@
   font-family: 'Lora', serif;
   color: var(--bg-text);
   font-size: 1rem;
-  line-height: 2em;
+  line-height: 2.5em;
   text-align: left;
+}
+
+.static-img {
+  display: inline-block;
+  margin: 0 0.4em;
+  padding: 0.1em;
+  height: 2em;
+
+  border: 1px solid var(--bg-text);
+
+  transform: translateY(25%);
+
+  transition: scale 0.25s ease, border-color 0.25s ease;
+}
+
+.static-img:hover {
+  border: none;
+  scale: 5;
 }
 
 .button {
@@ -275,4 +306,101 @@
   background-color: var(--bg-accent);
   border-color: var(--red);
   color: var(--red);
+}
+
+.project {
+	position: relative;
+	display: flex;
+  flex-direction: column;
+	align-items: flex-start;
+  align-items: center;
+	margin-top: 2rem;
+	padding-top: 2rem;
+
+	border-top: solid 1.5px #a50044;
+}
+
+  .project:first-of-type {
+    margin-top: 1rem;
+  }
+  
+.project-title {
+  width: 75%;
+  margin: 0 0 0 0;
+  
+  font-size: 1.5rem;
+  line-height: 1.5em;
+  font-weight: 400;
+  font-family: 'Oswald', sans-serif;
+  font-family: 'Lora', serif;
+}
+
+.project .project-desc {
+  display: flex;
+  width: 75%;
+  margin: 0.5rem 0 0 0;
+
+  line-height: 1.5em;
+  font-weight: 200;
+}
+
+.pill {
+  display: flex; 
+  margin-top: 0.5rem;
+  width: 75%;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pill span {
+  border: solid 1px var(--blue);
+  border-radius: 100px;
+  padding: 0.6em 1em 0.6em 1em;
+  color: var(--blue);
+
+  font-family: "Geist Mono", monospace;
+  font-size: 0.75em;
+  line-height: 1em;
+  font-weight: 200;
+}
+
+.carousel {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 4;
+
+  margin-top: 1rem;
+  mask-image: linear-gradient(to right, transparent 0%, var(--bg-text) 12.5%, var(--bg-text) 87.5%, transparent 100%);
+
+  overflow-x: hidden;
+}
+
+.track {
+  --progress: 0;
+  height: 100%;
+  display: flex;
+  width: max-content;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  transform: translateX(calc());
+}
+
+.card {
+  flex: 0 0 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  aspect-ratio: 1.5;
+
+  background-color: var(--bg-accent);
+  border-radius: 0.5rem;
+
+  font-family: "Geist Mono", monospace;
+  font-size: 1.5rem;
+  line-height: 1em;
 }

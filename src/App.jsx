@@ -6,7 +6,7 @@ import './App.css';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger, SplitText, ScrambleTextPlugin } from 'gsap/all';
-import { max } from 'three/tsl';
+// import { max } from 'three/tsl';
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 
@@ -47,7 +47,7 @@ function App() {
     }, 1);
 
     const secondSplit = SplitText.create('#second', {
-      type: 'chars',
+      type: ' words, chars',
       autoSplit: true,
       onSplit(self) {
         const n = self.chars.length;
@@ -59,14 +59,14 @@ function App() {
           duration: 3*gap,
           ease: 'power2.out',
           stagger: gap,
-          delay: 2,
+          delay: 1.75,
         });
       },
     });
 
     tl.add(() => {
       setReleaseLanyard(true);
-    }, 2.4);
+    }, 2.25);
 
     tl.add(() => {
       lanyard.classList.remove('invisible');
@@ -80,8 +80,8 @@ function App() {
 
   useGSAP(() => {
     const headerSplit = new SplitText(headerRef.current, {type: 'chars'});
-    gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0 });
-    gsap.set('.toc > *', { opacity: 0 });
+    gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0});
+    gsap.set('.toc > *', { opacity: 0, visibility: 'hidden' });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -89,10 +89,6 @@ function App() {
         end: () => window.innerHeight,
         scrub: true,
         invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          console.log(self.progress);
-          titleRef.current.classList.toggle('invisible', self.progress >= 0.56);
-        },
       },   
     });
 
@@ -116,57 +112,64 @@ function App() {
       duration: 3*0.25/13,
       ease: 'power2.out',
       stagger: 0.25/13,
+      visibility: 'visible',
     }, 0);
 
     tl2.to("#introduction-link", {
       scrambleText: {
         text: "Who am I?",
-        revealDelay: 0.15,
+        revealDelay: 0.1,
       },
       opacity: 1,
-      duration: 0.25,
+      visibility: 'visible',
+      duration: 0.2,
       ease: 'none',
-    })
+    }, 0)
       .to("#research-link", {
       scrambleText: {
         text: "Research",
-        revealDelay: 0.15,
+        revealDelay: 0.1,
       },
       opacity: 1,
-      duration: 0.25,
+      visibility: 'visible',
+      duration: 0.2,
       ease: 'none',
     })
       .to("#talks-papers-link", {
       scrambleText: {
         text: "Talks & Papers",
-        revealDelay: 0.15,
+        revealDelay: 0.1,
       },
       opacity: 1,
-      duration: 0.25,
+      visibility: 'visible',
+      duration: 0.2,
       ease: 'none',
     })
       .to("#academic-journey-link", {
       scrambleText: {
         text: "Academic Journey",
-        revealDelay: 0.15,
+        revealDelay: 0.1,
       },
       opacity: 1,
-      duration: 0.25,
+      visibility: 'visible',
+      duration: 0.2,
       ease: 'none',
     })
       .to("#certifications-link", {
       scrambleText: {
         text: "Certifications",
-        revealDelay: 0.15,
+        revealDelay: 0.1,
       },
       opacity: 1,
-      duration: 0.25,
+      visibility: 'visible',
+      duration: 0.2,
       ease: 'none',
     });
 
     tl2.from(footerRef.current, {
       yPercent: 25,
       opacity: 0,
+      visibility: 'hidden',
       duration: 0.25,
       ease: 'power2.out',
     },0);
@@ -176,7 +179,7 @@ function App() {
       end: 'max',
       invalidateOnRefresh: true,
       onEnter: () => tl2.timeScale(1).play(),
-      onLeaveBack: () => tl2.timeScale(3).reverse(),
+      onLeaveBack: () => tl2.timeScale(8).reverse(),
     });
     
     return () => {
@@ -184,13 +187,52 @@ function App() {
       tl.kill();
     };
   }, []);
+
+  useGSAP(() => {
+    const track1 = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#carousel-1',
+        start: 'bottom bottom',
+        end: 'bottom top',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    track1.to('#track-1', {
+      xPercent: -50,
+      duration: 1,
+    },[]);
+
+    const track2 = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#carousel-2',
+        start: 'bottom bottom',
+        end: 'bottom top',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    track2.from('#track-2', {
+      xPercent: -50,
+      duration: 1,
+    },[]);
+
+    return () => {
+      track1.kill();
+      track2.kill();
+    };
+  }, []);
   
 
   return (
     <>
+    {/* LANYARD */}
       <div className="lanyard-container invisible" ref={lanyardRef}>
         <Lanyard id="lanyard" ref={lanyardRef}
           frontImage={headshot}
+          // backImage={'../public/Group 1.svg'}
           imageFit="contain"
           cardColor="#f3f1eb"
           orientation="portrait"
@@ -210,6 +252,11 @@ function App() {
           paused={!releaseLanyard}
         />
       </div>
+
+    {/* NOISE TEXTURE */}
+    <div className="noise" aria-hidden="true" />
+
+    {/* HERO SECTION */}
       <div className="hero" id="hero" ref={heroRef}>
         <h1 ref={titleRef}>
           <span id="first">Hello! </span>
@@ -220,11 +267,10 @@ function App() {
         {/* <a href="#introduction" className="scroll-icon"><FaChevronDown /></a> */}
       </div>
 
+    {/* SIDEBAR */}
       <div className="sidebar" id="sidebar" ref={sidebarRef}>
-        <div className="header" ref={headerRef}>
-          <h2><a href="#top" onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });}}>Mayank<br/>Shenoy</a></h2>
+        <div className="header hidden" ref={headerRef}>
+          <h2><a href="#top">Mayank<br/>Shenoy</a></h2>
         </div>
         <nav className="toc" ref={tocRef}>
           <a href="#introduction" id="introduction-link">Who am I?</a>
@@ -253,13 +299,16 @@ function App() {
         </div>
       </div>
 
+    {/* MAIN CONTENT */}
       <main>
           <div className="blank"></div>
+
+        {/* INTRODUCTION */}
           <div className="section" id="introduction">
             <p className="tag">01/05</p>
             <h2>Who am I?</h2>
             <p>
-              I am a computational astrophysicist and graduate student at Imperial College London, where I'm finishing my 
+              I am a computational astrophysicist and graduate student at Imperial College London <img className="static-img" src="../public/imperial.svg" alt="Imperial College London" />, where I'm finishing my 
 							MSc in Physics. I earned my Honours BSc in Astronomy and Physics from the University of Toronto in 2024. I am interested
 							in exploring the physics of some of the most extreme environments in the universe by using large-scale simulations of 
 							observational targets like Sagittarius A* or localised box simulations based on what we observe from them, here on Earth.
@@ -271,19 +320,78 @@ function App() {
             <a className="button">Read my CV<span><FaArrowRightLong /></span></a>
           </div>
 
+        {/* RESEARCH */}
           <div className="section" id="research">
+            <p className="tag">02/05</p>
             <h2>Research</h2>
+            <div className="project">
+              <h3 className="project-title">
+                <a href="">Radiatively Cooled Magnetic Reconnection in Semi-Relativistic Electron-Ion Plasmas {/* <span aria-hidden="true"> <FaArrowRightLong /></span> */} </a>
+              </h3>
+                {/* <p className="project-desc">
+                  Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
+                  reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
+                  supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
+                </p> */}
+              <div className="pill">
+                <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>HPC</span> <span>Python</span>
+              </div>
+              <div className="carousel" id="carousel-1">
+                <div className="track" id="track-1">
+                  <div className="card">1</div>
+                  <div className="card">2</div>
+                  <div className="card">3</div>
+                  <div className="card">4</div>
+                  <div className="card">1</div>
+                  <div className="card">2</div>
+                  <div className="card">3</div>
+                  <div className="card">4</div>
+                </div>
+              </div>
+						</div>
+
+            <div className="project">
+              <h3 className="project-title">
+                <a href="">Reconnection-driven Flux Eruptions in Wind-fed Accretion Flows on Sagittarius A* {/* <span aria-hidden="true"> <FaArrowRightLong /></span> */} </a>
+              </h3>
+              {/* <p className="project-desc">
+                Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
+                reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
+                supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
+              </p> */}
+              <div className="pill">
+                <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>HPC</span> <span>Python</span>
+              </div>
+              <div className="carousel" id="carousel-2">
+                <div className="track" id="track-2">
+                  <div className="card">1</div>
+                  <div className="card">2</div>
+                  <div className="card">3</div>
+                  <div className="card">4</div>
+                  <div className="card">1</div>
+                  <div className="card">2</div>
+                  <div className="card">3</div>
+                  <div className="card">4</div>
+                </div>
+              </div>
+						</div>
           </div>
 
+          {/* TALKS & PAPERS */}
           <div className="section" id="talks-papers">
+            <p className="tag">03/05</p>
             <h2>Talks & Papers</h2>
           </div>
 
+          {/* ACADEMIC JOURNEY */}
           <div className="section" id="academic-journey">
+            <p className="tag">04/05</p>
             <h2>Academic Journey</h2>
           </div>
 
+          {/* CERTIFICATIONS */}
           <div className="section" id="certifications">
+            <p className="tag">05/05</p>
             <h2>Certifications</h2>
           </div>
       </main>
