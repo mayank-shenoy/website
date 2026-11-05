@@ -210,7 +210,7 @@ function App() {
     const track1 = gsap.timeline({
       scrollTrigger: {
         trigger: '#carousel-1',
-        start: 'bottom bottom',
+        start: 'top bottom',
         end: 'bottom top',
         scrub: true,
         invalidateOnRefresh: true,
@@ -220,12 +220,13 @@ function App() {
     track1.to('#track-1', {
       xPercent: -50,
       duration: 1,
+      ease: 'none',
     },[]);
 
     const track2 = gsap.timeline({
       scrollTrigger: {
         trigger: '#carousel-2',
-        start: 'bottom bottom',
+        start: 'top bottom',
         end: 'bottom top',
         scrub: true,
         invalidateOnRefresh: true,
@@ -235,6 +236,7 @@ function App() {
     track2.from('#track-2', {
       xPercent: -50,
       duration: 1,
+      ease: 'none',
     },[]);
 
     return () => {

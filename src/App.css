@@ -281,7 +281,7 @@
 
   align-self: flex-start;
 
-	transition: border-color .2s ease, color .2s ease, background-color .2s ease;
+	transition: border-color .2s ease, color .2s ease, background-color .2s ease, scale .2s ease;
 }
 
 .button span { 
@@ -306,6 +306,7 @@
   background-color: var(--bg-accent);
   border-color: var(--red);
   color: var(--red);
+  scale: 0.975;
 }
 
 .project {
