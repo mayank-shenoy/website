@@ -1,4 +1,3 @@
-import headshot from './assets/photo.jpg';
 import Lanyard from './component/Lanyard-updated';
 import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong, FaChevronDown } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
@@ -6,8 +5,9 @@ import './App.css';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger, SplitText, ScrambleTextPlugin } from 'gsap/all';
-// import { max } from 'three/tsl';
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
 
 function App() {
@@ -19,6 +19,24 @@ function App() {
   const headerRef = useRef(null);
   const tocRef = useRef(null);
   const footerRef = useRef(null);
+
+  useGSAP(() => {
+    const lenis = new Lenis();
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const ticker = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(ticker);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(ticker);
+      lenis.destroy();
+    };
+  });
 
   useGSAP(() => {
     const lanyard = lanyardRef.current;
@@ -231,7 +249,7 @@ function App() {
     {/* LANYARD */}
       <div className="lanyard-container invisible" ref={lanyardRef}>
         <Lanyard id="lanyard" ref={lanyardRef}
-          frontImage={headshot}
+          frontImage={"../public/photo.jpg"}
           // backImage={'../public/Group 1.svg'}
           imageFit="contain"
           cardColor="#f3f1eb"
