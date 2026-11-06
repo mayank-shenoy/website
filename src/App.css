@@ -38,7 +38,7 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  z-index: 15;
+  z-index: 150;
 }
 
 .lanyard {
@@ -48,7 +48,7 @@
   top: 0%;
   left: 30%;
   transform: translateX(-50%);
-  z-index: 15;
+  z-index: 150;
 }
 
 .hero h1 {
@@ -179,14 +179,15 @@
 .toc a {
   color: var(--header-text);
   text-decoration: none;
+  border: none; 
 
-  transition: color 0.25s ease, text-decoration 0.25s ease;
+  transition: color 0.25s ease, text-decoration 0.25s ease, scale 0.25s ease;
 }
 
 .toc a:hover {
   color: var(--gold);
   text-decoration: overline;
-  /* scale: 1.25; */
+  scale: 1.25;
 }
 
 .blank {
@@ -324,17 +325,52 @@
   .project:first-of-type {
     margin-top: 1rem;
   }
+
+.project-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 90%;
+}
   
 .project-title {
-  width: 75%;
-  margin: 0 0 0 0;
+  /* width: 60%; */
+  flex: 1 1 60%;
+  min-width: 0;
+  margin: 0;
   
   font-size: 1.5rem;
-  line-height: 1.5em;
+  line-height: 1.25em;
   font-weight: 400;
   font-family: 'Oswald', sans-serif;
   font-family: 'Lora', serif;
 }
+
+.project-title a {
+  text-decoration: none;
+  border-bottom: dotted 2px var(--bg-text);
+  
+  transition: color .2s ease, scale .2s ease, border .2s ease;
+}
+
+.project-title a:hover {
+  border: none;
+  color: var(--red);
+}
+
+.project-title span { 
+  display: inline-flex;
+  font-size: 1rem;
+	color: var(--bg-text); 
+  rotate: -45deg;
+	transition: transform .2s ease, color .2s ease; 
+}
+	
+.project-title a:hover span {
+  color: var(--red);
+  transform: translateX(3px);
+}
+
 
 .project .project-desc {
   display: flex;
@@ -347,12 +383,14 @@
 
 .pill {
   display: flex; 
-  margin-top: 0.5rem;
-  width: 75%;
-  align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  flex: 1 1 40%;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  min-width: 0;
+  gap: 0.5rem 0.5rem;
 }
 
 .pill span {
@@ -365,6 +403,7 @@
   font-size: 0.75em;
   line-height: 1em;
   font-weight: 200;
+  white-space: nowrap;
 }
 
 .carousel {
@@ -372,36 +411,34 @@
   width: 100%;
   aspect-ratio: 4;
 
+  align-items: center;
+
   margin-top: 1rem;
   mask-image: linear-gradient(to right, transparent 0%, var(--bg-text) 12.5%, var(--bg-text) 87.5%, transparent 100%);
 
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .track {
-  --progress: 0;
-  height: 100%;
   display: flex;
   width: max-content;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
 
-  transform: translateX(calc());
+  height: 100%;
+  gap: -1rem;
 }
 
 .card {
-  flex: 0 0 1;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   height: 100%;
   aspect-ratio: 1.5;
+  scale: 0.8;
+
+  shadow: 0px 0px 10px var(--bg-accent);
 
   background-color: var(--bg-accent);
-  border-radius: 0.5rem;
-
-  font-family: "Geist Mono", monospace;
-  font-size: 1.5rem;
-  line-height: 1em;
 }

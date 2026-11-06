@@ -19,7 +19,10 @@ function App() {
   const headerRef = useRef(null);
   const tocRef = useRef(null);
   const footerRef = useRef(null);
+  const mainRef = useRef(null);
 
+
+  // SMOOTH SCROLLING
   useGSAP(() => {
     const lenis = new Lenis();
 
@@ -38,6 +41,7 @@ function App() {
     };
   });
 
+  // INTRO HERO ANIMATION
   useGSAP(() => {
     const lanyard = lanyardRef.current;
     const first = document.getElementById('first');
@@ -96,6 +100,7 @@ function App() {
     };
   }, []);
 
+  // HERO TO SIDEBAR ANIMATION
   useGSAP(() => {
     const headerSplit = new SplitText(headerRef.current, {type: 'chars'});
     gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0});
@@ -107,6 +112,7 @@ function App() {
         end: () => window.innerHeight,
         scrub: true,
         invalidateOnRefresh: true,
+        pin: ".pinned", 
       },   
     });
 
@@ -203,48 +209,134 @@ function App() {
     return () => {
       headerSplit.revert();
       tl.kill();
+      tl2.kill();
     };
   }, []);
 
   useGSAP(() => {
-    const track1 = gsap.timeline({
+    const carousel1 = document.querySelector('#carousel-1');
+
+    const carouselPos = (frac) => {
+      const rect = carousel1.getBoundingClientRect();
+
+      return `${(rect.left + rect.width * frac) / window.innerWidth * 100}%`;
+    };
+
+    // CAROUSEL 1
+    const track1 = gsap.to('#track-1', {
+      xPercent: -50,
+      ease: 'none',
       scrollTrigger: {
         trigger: '#carousel-1',
         start: 'top bottom',
         end: 'bottom top',
-        scrub: true,
+        scrub: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    track1.to('#track-1', {
-      xPercent: -50,
-      duration: 1,
-      ease: 'none',
-    },[]);
+    const cards1 = gsap.utils.toArray('#track-1 .card');
 
-    const track2 = gsap.timeline({
+    cards1.forEach((card) => {
+      gsap.set(card, { scale: 0.8 });
+
+      // SCALE UP
+      gsap.to(card, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: track1,
+          horizontal: true,
+          start: () => `12.5% ${carouselPos(0.875)}`,
+          end: () => `44% ${carouselPos(0.5)}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+          // markers: true,
+        },
+      });
+
+      // SCALE DOWN
+      gsap.fromTo(card, {
+        scale: 1,
+      }, {
+        scale: 0.8,
+        ease: 'none',
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: track1,
+          horizontal: true,
+          start: () => `67% ${carouselPos(0.5)}`,
+          end: () => `56% ${carouselPos(0.125)}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+          // markers: true,
+        },
+      });
+    });
+
+    // CAROUSEL 2
+    const track2 = gsap.from('#track-2', {
+      xPercent: -50,
+      ease: 'none',
       scrollTrigger: {
         trigger: '#carousel-2',
         start: 'top bottom',
         end: 'bottom top',
-        scrub: true,
+        scrub: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    track2.from('#track-2', {
-      xPercent: -50,
-      duration: 1,
-      ease: 'none',
-    },[]);
+    const cards2 = gsap.utils.toArray('#track-2 .card');
+
+    cards2.forEach((card) => {
+      gsap.set(card, { scale: 0.8 });
+
+      // SCALE UP
+      gsap.to(card, {
+        scale: 1,
+
+        ease: 'none',
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: track2,
+          horizontal: true,
+          start: () => `87.5% ${carouselPos(0.125)}`,
+          end: () => `56% ${carouselPos(0.5)}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+          // markers: true,
+        },
+      });
+
+      // SCALE DOWN
+      gsap.fromTo(card, {
+        scale: 1,
+      }, {
+        scale: 0.8,
+        ease: 'none',
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: track2,
+          horizontal: true,
+          start: () => `33% ${carouselPos(0.5)}`,
+          end: () => `44% ${carouselPos(0.875)}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+          // markers: true,
+        },
+      });
+    });
 
     return () => {
       track1.kill();
       track2.kill();
     };
   }, []);
-  
+
 
   return (
     <>
@@ -252,7 +344,7 @@ function App() {
       <div className="lanyard-container invisible" ref={lanyardRef}>
         <Lanyard id="lanyard" ref={lanyardRef}
           frontImage={"../public/photo.jpg"}
-          // backImage={'../public/Group 1.svg'}
+          backImage= {"../public/photo.jpg"}
           imageFit="contain"
           cardColor="#f3f1eb"
           orientation="portrait"
@@ -320,11 +412,11 @@ function App() {
       </div>
 
     {/* MAIN CONTENT */}
-      <main>
-          <div className="blank"></div>
+      <main ref={mainRef} id="main">
+          {/* <div className="blank"></div> */}
 
         {/* INTRODUCTION */}
-          <div className="section" id="introduction">
+          <div className="section pinned" id="introduction">
             <p className="tag">01/05</p>
             <h2>Who am I?</h2>
             <p>
@@ -341,46 +433,48 @@ function App() {
           </div>
 
         {/* RESEARCH */}
-          <div className="section" id="research">
+          <div className="section pinned" id="research">
             <p className="tag">02/05</p>
             <h2>Research</h2>
             <div className="project">
-              <h3 className="project-title">
-                <a href="">Radiatively Cooled Magnetic Reconnection in Semi-Relativistic Electron-Ion Plasmas {/* <span aria-hidden="true"> <FaArrowRightLong /></span> */} </a>
-              </h3>
-                {/* <p className="project-desc">
-                  Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
-                  reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
-                  supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
-                </p> */}
-              <div className="pill">
-                <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>HPC</span> <span>Python</span>
+              <div className="project-info">
+                <h3 className="project-title">
+                  <a href="">Radiatively Cooled Magnetic Reconnection in Semi-Relativistic Electron-Ion Plasmas <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                </h3>
+                  {/* <p className="project-desc">
+                    Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
+                    reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
+                    supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
+                  </p> */}
+                <div className="pill">
+                  <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>Python</span> <span>h5py</span> <span>HPC</span> 
+                </div>
               </div>
               <div className="carousel" id="carousel-1">
                 <div className="track" id="track-1">
                   <div className="card">1</div>
                   <div className="card">2</div>
                   <div className="card">3</div>
-                  <div className="card">4</div>
                   <div className="card">1</div>
                   <div className="card">2</div>
                   <div className="card">3</div>
-                  <div className="card">4</div>
                 </div>
               </div>
 						</div>
 
             <div className="project">
-              <h3 className="project-title">
-                <a href="">Reconnection-driven Flux Eruptions in Wind-fed Accretion Flows on Sagittarius A* {/* <span aria-hidden="true"> <FaArrowRightLong /></span> */} </a>
-              </h3>
-              {/* <p className="project-desc">
-                Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
-                reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
-                supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
-              </p> */}
-              <div className="pill">
-                <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>HPC</span> <span>Python</span>
+              <div className="project-info">
+                <h3 className="project-title">
+                  <a href="">Reconnection-driven Flux Eruptions in Wind-fed Accretion Flows on Sagittarius A* <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                </h3>
+                {/* <p className="project-desc">
+                  Investigating the role of radiative cooling on the energy distribution and resulting spectra from magnetic 
+                  reconnection in semi-relativistic electron-ion plasmas with magnetisation relevant to the coronae of 
+                  supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
+                </p> */}
+                <div className="pill">
+                  <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>Python</span> <span>yt</span> <span>HPC</span> 
+                </div>
               </div>
               <div className="carousel" id="carousel-2">
                 <div className="track" id="track-2">
@@ -398,19 +492,19 @@ function App() {
           </div>
 
           {/* TALKS & PAPERS */}
-          <div className="section" id="talks-papers">
+          <div className="section pinned" id="talks-papers">
             <p className="tag">03/05</p>
             <h2>Talks & Papers</h2>
           </div>
 
           {/* ACADEMIC JOURNEY */}
-          <div className="section" id="academic-journey">
+          <div className="section pinned" id="academic-journey">
             <p className="tag">04/05</p>
             <h2>Academic Journey</h2>
           </div>
 
           {/* CERTIFICATIONS */}
-          <div className="section" id="certifications">
+          <div className="section pinned" id="certifications">
             <p className="tag">05/05</p>
             <h2>Certifications</h2>
           </div>
