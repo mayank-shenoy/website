@@ -79,14 +79,6 @@
   visibility: hidden;
 }
 
-.gradient {
-  background: linear-gradient(to top, var(--header-accent) 0%, var(--header-text) 60%);
-  background-size: 100% calc(100% + 1rem);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
 .scroll-icon {
   position: fixed;
   bottom: 5vh;
@@ -198,10 +190,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 0;
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+  margin-top: 2rem;
+  /* padding-top: 4rem;
+  padding-bottom: 2rem; */
+  padding: 2rem 0;
   gap: 1rem;
+}
+
+.alt {
+  background-color: var(--bg-accent);
+  margin-top: 4rem;
 }
 
 .section p.tag {
@@ -316,21 +314,18 @@
   flex-direction: column;
 	align-items: flex-start;
   align-items: center;
-	margin-top: 2rem;
-	padding-top: 2rem;
+	margin-top: 1rem;
+	padding: 2rem 0;
 
-	border-top: solid 1.5px #a50044;
+  border: solid 2px var(--header-accent);
+  box-shadow: 12.5px 12.5px 0px 0px var(--bg-accent-dark);
 }
-
-  .project:first-of-type {
-    margin-top: 1rem;
-  }
 
 .project-info {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  width: 90%;
+  align-items: center;
+  width: 85%;
 }
   
 .project-title {
@@ -374,7 +369,7 @@
 
 .project .project-desc {
   display: flex;
-  width: 75%;
+  width: 85%;
   margin: 0.5rem 0 0 0;
 
   line-height: 1.5em;
@@ -408,15 +403,40 @@
 
 .carousel {
   display: flex;
-  width: 100%;
+  position: relative;
+  width: 85%;
   aspect-ratio: 4;
+  /* border-radius: 5%; */
 
   align-items: center;
 
   margin-top: 1rem;
-  mask-image: linear-gradient(to right, transparent 0%, var(--bg-text) 12.5%, var(--bg-text) 87.5%, transparent 100%);
+  padding: 1% 0 1% 0;
 
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.carousel::before, .carousel::after {
+  content: "";
+  position: absolute;
+  top: 5%;
+  width: 20px;
+  height: 90%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.carousel::before {
+  left: 0;
+  box-shadow: inset 5cqh 0 5cqh -5cqh #00000050;
+  mask-image: radial-gradient(ellipse farthest-side at left, #ffffff 0%, transparent 100%);
+}
+
+.carousel::after {
+  position: absolute;
+  right: 0;
+  box-shadow: inset -5cqh 0 5cqh -5cqh #00000050;
+  mask-image: radial-gradient(ellipse farthest-side at right, #ffffff 0%, transparent 100%);
 }
 
 .track {
@@ -427,6 +447,7 @@
 
   height: 100%;
   gap: -1rem;
+  overflow-y: visible;
 }
 
 .card {
@@ -436,9 +457,10 @@
   justify-content: space-evenly;
   height: 100%;
   aspect-ratio: 1.5;
-  scale: 0.8;
+  scale: 0.85;
 
-  shadow: 0px 0px 10px var(--bg-accent);
+  /* box-shadow: 0px 10px 10px var(--header-accent); */
 
   background-color: var(--bg-accent);
 }
+

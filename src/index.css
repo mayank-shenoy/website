@@ -8,10 +8,11 @@
     --header: #121113;
     --header-text: #f7f7f2; 
     --header-accent: #2a282a;
-
+    
     --bg: #f7f7f2;
     --bg-text: #121113;
     --bg-accent: #e8e8d9;
+    --bg-accent-dark: #d8d8c0;
 }
 
 .dark-mode {

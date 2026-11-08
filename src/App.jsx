@@ -113,6 +113,14 @@ function App() {
         scrub: true,
         invalidateOnRefresh: true,
         pin: ".pinned", 
+        snap: {
+          snapTo: 1,
+          directional: false,
+          inertia: true,
+          delay: 0.05,
+
+          ease: "power2.inOut",
+        },
       },   
     });
 
@@ -146,9 +154,9 @@ function App() {
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.2,
+      duration: 0.15,
       ease: 'none',
-    }, 0)
+    }, 0.35)
       .to("#research-link", {
       scrambleText: {
         text: "Research",
@@ -156,7 +164,7 @@ function App() {
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.2,
+      duration: 0.15,
       ease: 'none',
     })
       .to("#talks-papers-link", {
@@ -166,7 +174,17 @@ function App() {
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.2,
+      duration: 0.15,
+      ease: 'none',
+    })
+      .to("#projects-link", {
+      scrambleText: {
+        text: "Projects",
+        revealDelay: 0.1,
+      },
+      opacity: 1,
+      visibility: 'visible',
+      duration: 0.15,
       ease: 'none',
     })
       .to("#academic-journey-link", {
@@ -176,7 +194,7 @@ function App() {
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.2,
+      duration: 0.15,
       ease: 'none',
     })
       .to("#certifications-link", {
@@ -186,7 +204,7 @@ function App() {
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.2,
+      duration: 0.15,
       ease: 'none',
     });
 
@@ -236,11 +254,9 @@ function App() {
     });
 
     const cards1 = gsap.utils.toArray('#track-1 .card');
-
     cards1.forEach((card) => {
-      gsap.set(card, { scale: 0.8 });
+      gsap.set(card, { scale: 0.85 });
 
-      // SCALE UP
       gsap.to(card, {
         scale: 1,
         ease: 'none',
@@ -256,11 +272,10 @@ function App() {
         },
       });
 
-      // SCALE DOWN
       gsap.fromTo(card, {
         scale: 1,
       }, {
-        scale: 0.8,
+        scale: 0.85,
         ease: 'none',
         immediateRender: false,
         scrollTrigger: {
@@ -290,11 +305,9 @@ function App() {
     });
 
     const cards2 = gsap.utils.toArray('#track-2 .card');
-
     cards2.forEach((card) => {
-      gsap.set(card, { scale: 0.8 });
+      gsap.set(card, { scale: 0.85 });
 
-      // SCALE UP
       gsap.to(card, {
         scale: 1,
 
@@ -311,11 +324,10 @@ function App() {
         },
       });
 
-      // SCALE DOWN
       gsap.fromTo(card, {
         scale: 1,
       }, {
-        scale: 0.8,
+        scale: 0.85,
         ease: 'none',
         immediateRender: false,
         scrollTrigger: {
@@ -388,6 +400,7 @@ function App() {
           <a href="#introduction" id="introduction-link">Who am I?</a>
           <a href="#research" id="research-link">Research </a>
           <a href="#talks-papers" id="talks-papers-link">Talks & Papers </a>
+          <a href="#projects" id="projects-link">Projects </a>
           <a href="#academic-journey" id="academic-journey-link">Academic Journey </a>
           <a href="#certifications" id="certifications-link">Certifications </a>
         </nav>
@@ -417,7 +430,7 @@ function App() {
 
         {/* INTRODUCTION */}
           <div className="section pinned" id="introduction">
-            <p className="tag">01/05</p>
+            <p className="tag">01/06</p>
             <h2>Who am I?</h2>
             <p>
               I am a computational astrophysicist and graduate student at Imperial College London <img className="static-img" src="../public/imperial.svg" alt="Imperial College London" />, where I'm finishing my 
@@ -434,7 +447,7 @@ function App() {
 
         {/* RESEARCH */}
           <div className="section pinned" id="research">
-            <p className="tag">02/05</p>
+            <p className="tag">02/06</p>
             <h2>Research</h2>
             <div className="project">
               <div className="project-info">
@@ -491,22 +504,69 @@ function App() {
 						</div>
           </div>
 
-          {/* TALKS & PAPERS */}
-          <div className="section pinned" id="talks-papers">
-            <p className="tag">03/05</p>
+        {/* TALKS & PAPERS */}
+          <div className="section pinned alt" id="talks-papers">
+            <p className="tag">03/06</p>
             <h2>Talks & Papers</h2>
           </div>
 
+        {/* PROJECTS */}
+          <div className="section pinned" id="projects">
+            <p className="tag">04/06</p>
+            <h2>Projects</h2>
+            <div className="project">
+              <div className="project-info">
+                <h3 className="project-title">
+                  <a href="">Radiatively Cooled Magnetic Reconnection in Semi-Relativistic Electron-Ion Plasmas <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                </h3>
+                <div className="pill">
+                  <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>Python</span> <span>h5py</span> <span>HPC</span> 
+                </div>
+              </div>
+              <p className="project-desc">
+
+              </p>
+						</div>
+
+            <div className="project">
+              <div className="project-info">
+                <h3 className="project-title">
+                  <a href="">Reconnection-driven Flux Eruptions in Wind-fed Accretion Flows on Sagittarius A* <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                </h3>
+                <div className="pill">
+                  <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>Python</span> <span>yt</span> <span>HPC</span> 
+                </div>
+              </div>
+              <p className="project-desc">
+                    
+              </p>
+						</div>
+          </div>       
+
           {/* ACADEMIC JOURNEY */}
-          <div className="section pinned" id="academic-journey">
-            <p className="tag">04/05</p>
+          <div className="section pinned alt" id="academic-journey">
+            <p className="tag">05/06</p>
             <h2>Academic Journey</h2>
           </div>
 
           {/* CERTIFICATIONS */}
           <div className="section pinned" id="certifications">
-            <p className="tag">05/05</p>
+            <p className="tag">06/06</p>
             <h2>Certifications</h2>
+            <div className="cert-wrapper">
+              <div className="cert">
+                <h4 className="cert-title">
+
+                </h4>
+                <img className="cert-img" src="../public/cert.png" alt="Certification" />
+              </div>
+              <div className="cert">
+                <h4 className="cert-title">
+
+                </h4>
+                <img className="cert-img" src="../public/cert.png" alt="Certification" />
+              </div>
+            </div>
           </div>
       </main>
     </>
