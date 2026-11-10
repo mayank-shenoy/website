@@ -480,7 +480,7 @@ function App() {
 
         {/* TALKS & PAPERS */}
           <div className="section pinned alt" id="talks-papers">
-            <p className="tag">03/06</p>
+            <p className="alt-tag">03/06</p>
             <h2>Talks & Papers</h2>
           </div>
 
@@ -531,20 +531,20 @@ function App() {
             <h2>Certifications</h2>
             <div className="cert-wrapper">
               <div className="cert">
-                <img className="cert-icon" src="../public/xanadu.svg" alt="PennyLane Codebook" />
+                <img className="cert-icon" alt="PennyLane Codebook" />
                 <h4 className="cert-title">
                   PennyLane Codebook
                 </h4>
               </div>
               <div className="cert">
-                < FaGoogle className='cert-icon' />
+                < img className="cert-icon" alt="Google" />
                 <h4 className="cert-title">
                   Google AI Essentials
                 </h4>
               </div>
               <div className="cert">
+                <img className="cert-icon" alt="IBM" />
                 <h4 className="cert-title">
-                  <img className="cert-icon" src="../public/ibm.svg" alt="IBM" />
                   Databases and SQL for Data Science with Python
                 </h4>
               </div>

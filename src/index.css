@@ -13,12 +13,20 @@
     --bg-text: #121113;
     --bg-accent: #e8e8d9;
     --bg-accent-dark: #d8d8c0;
+
+    --google: url("../public/google.svg");
+    --ibm: url("../public/ibm.svg");
+    --xanadu: url("../public/xanadu.svg");
 }
 
 .dark-mode {
     --bg: #201e20;
     --bg-text: #f7f7f2;
     --bg-accent: #2a282a;
+
+    --google: url("../public/google-dark.svg");
+    --ibm: url("../public/ibm-dark.svg");
+    --xanadu: url("../public/xanadu-dark.svg");
 }
 
 * {
@@ -53,51 +61,3 @@ a.hover {
   /* text-decoration: underline; */
   scale: 1.25;
 }
-/* google 2 */
-
-position: relative;
-width: 1225px;
-height: 636px;
-
-background: #F7F7F2;
-
-
-/* Rectangle 12 */
-
-position: absolute;
-width: 306px;
-height: 636px;
-left: 0px;
-top: 0px;
-
-background: #121113;
-
-
-/* Rectangle 13 */
-
-position: absolute;
-width: 919px;
-height: 400px;
-left: 306px;
-top: 118px;
-
-background: #E8E8D9;
-
-
-/* Academic Journey */
-
-position: absolute;
-width: 414px;
-height: 95px;
-left: 370px;
-top: 134px;
-
-font-family: 'Oswald';
-font-style: normal;
-font-weight: 400;
-font-size: 64px;
-line-height: 95px;
-/* identical to box height */
-
-color: #000000;
-
