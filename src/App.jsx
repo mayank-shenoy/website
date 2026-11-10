@@ -1,5 +1,5 @@
 import Lanyard from './component/Lanyard-updated';
-import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong, FaChevronDown } from 'react-icons/fa6';
+import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong, FaChevronDown, FaGit, FaGitAlt, FaGithubAlt, FaGoogle } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { useGSAP } from '@gsap/react';
@@ -8,6 +8,7 @@ import { ScrollTrigger, SplitText, ScrambleTextPlugin } from 'gsap/all';
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
+import { FaGithubSquare } from 'react-icons/fa';
 
 
 function App() {
@@ -22,35 +23,26 @@ function App() {
   const mainRef = useRef(null);
 
 
-  // SMOOTH SCROLLING
   useGSAP(() => {
+    // SMOOTH SCROLL
     const lenis = new Lenis();
-
     lenis.on('scroll', ScrollTrigger.update);
-
     const ticker = (time) => {
       lenis.raf(time * 1000);
     };
-
     gsap.ticker.add(ticker);
     gsap.ticker.lagSmoothing(0);
 
-    return () => {
-      gsap.ticker.remove(ticker);
-      lenis.destroy();
-    };
-  });
 
-  // INTRO HERO ANIMATION
-  useGSAP(() => {
+    // INTRO HERO ANIMATION
     const lanyard = lanyardRef.current;
     const first = document.getElementById('first');
     const shiftx = first.getBoundingClientRect().width;
     const shifty = first.getBoundingClientRect().height;
 
-    const tl = gsap.timeline();
+    const tl_hero = gsap.timeline();
 
-    tl.fromTo(titleRef.current, {
+    tl_hero.fromTo(titleRef.current, {
       x: -0.5 * shiftx,
       y:  shifty,
       opacity: 0,
@@ -62,7 +54,7 @@ function App() {
       ease: 'back.out',
     })
 
-    tl.to(titleRef.current, {
+    tl_hero.to(titleRef.current, {
       x: 0,
       duration: 0.75,
       ease: 'power2.out',
@@ -86,22 +78,16 @@ function App() {
       },
     });
 
-    tl.add(() => {
+    tl_hero.add(() => {
       setReleaseLanyard(true);
     }, 2.25);
 
-    tl.add(() => {
+    tl_hero.add(() => {
       lanyard.classList.remove('invisible');
     }, 2.5);
 
-    return () => {
-      secondSplit.revert();
-      tl.kill();
-    };
-  }, []);
 
-  // HERO TO SIDEBAR ANIMATION
-  useGSAP(() => {
+    // HERO TO SIDEBAR ANIMATION
     const headerSplit = new SplitText(headerRef.current, {type: 'chars'});
     gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0});
     gsap.set('.toc > *', { opacity: 0, visibility: 'hidden' });
@@ -223,20 +209,12 @@ function App() {
       onEnter: () => tl2.timeScale(1).play(),
       onLeaveBack: () => tl2.timeScale(8).reverse(),
     });
-    
-    return () => {
-      headerSplit.revert();
-      tl.kill();
-      tl2.kill();
-    };
-  }, []);
 
-  useGSAP(() => {
+
+    // RESEARCH CAROUSEL ANIMATION
     const carousel1 = document.querySelector('#carousel-1');
-
     const carouselPos = (frac) => {
       const rect = carousel1.getBoundingClientRect();
-
       return `${(rect.left + rect.width * frac) / window.innerWidth * 100}%`;
     };
 
@@ -343,11 +321,7 @@ function App() {
       });
     });
 
-    return () => {
-      track1.kill();
-      track2.kill();
-    };
-  }, []);
+  });
 
 
   return (
@@ -517,35 +491,37 @@ function App() {
             <div className="project">
               <div className="project-info">
                 <h3 className="project-title">
-                  <a href="">Radiatively Cooled Magnetic Reconnection in Semi-Relativistic Electron-Ion Plasmas <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                  <a href=""> Signal Classification with Convolutional Neural Networks <span className="external-link" aria-hidden="true"> <FaGithub/></span> </a>
                 </h3>
                 <div className="pill">
-                  <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>Python</span> <span>h5py</span> <span>HPC</span> 
+                  <span>PyTorch</span> <span>scikit-learn</span> <span>NumPy</span> <span>SciPy</span> <span>Python</span>
                 </div>
               </div>
               <p className="project-desc">
-
+                I built a 1D convolutional neural network using PyTorch to distinguish between electron and neutron scintillation signals, 
+                experimenting with its architecture to better capture waveform differences and achieve a test accuracy of 99.3% and 0.997 ROC AUC.
               </p>
 						</div>
 
             <div className="project">
               <div className="project-info">
                 <h3 className="project-title">
-                  <a href="">Reconnection-driven Flux Eruptions in Wind-fed Accretion Flows on Sagittarius A* <span aria-hidden="true"> <FaArrowRightLong /></span> </a>
+                  <a href=""> Boson Decay Classification with Gradient Boosted Decision Trees  <span className="external-link" aria-hidden="true"> <FaGithub/></span> </a>
                 </h3>
                 <div className="pill">
-                  <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>Python</span> <span>yt</span> <span>HPC</span> 
+                  <span>XGBoost</span> <span>scikit-learn</span> <span>Pandas</span> <span>NumPy</span> <span>Python</span>
                 </div>
               </div>
               <p className="project-desc">
-                    
+                I used XGBoost to classify Higgs boson decay events in simulated LHC data with a statistical precision of 5%, further classifying 
+                their individual production channels, gluon-gluon and vector boson fusion, with a precision of 9% and 19% respectively.
               </p>
 						</div>
           </div>       
 
           {/* ACADEMIC JOURNEY */}
           <div className="section pinned alt" id="academic-journey">
-            <p className="tag">05/06</p>
+            <p className="alt-tag">05/06</p>
             <h2>Academic Journey</h2>
           </div>
 
@@ -555,16 +531,22 @@ function App() {
             <h2>Certifications</h2>
             <div className="cert-wrapper">
               <div className="cert">
+                <img className="cert-icon" src="../public/xanadu.svg" alt="PennyLane Codebook" />
                 <h4 className="cert-title">
-
+                  PennyLane Codebook
                 </h4>
-                <img className="cert-img" src="../public/cert.png" alt="Certification" />
+              </div>
+              <div className="cert">
+                < FaGoogle className='cert-icon' />
+                <h4 className="cert-title">
+                  Google AI Essentials
+                </h4>
               </div>
               <div className="cert">
                 <h4 className="cert-title">
-
+                  <img className="cert-icon" src="../public/ibm.svg" alt="IBM" />
+                  Databases and SQL for Data Science with Python
                 </h4>
-                <img className="cert-img" src="../public/cert.png" alt="Certification" />
               </div>
             </div>
           </div>
