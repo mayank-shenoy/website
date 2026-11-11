@@ -14,6 +14,8 @@
 
 .hero {
   --pos: 50%;
+  --ht: 100%;
+  --t: 0;
 
   position: fixed;
   top: 0;
@@ -34,10 +36,10 @@
 .hero::after {
   content: "";
   position: absolute;
-  top: 50%;
+  top: var(--t);
   right: 0;
   width: 4px;
-  height: 2rem;
+  height: var(--ht);
   background-color: var(--gold);
 }
 
@@ -186,17 +188,8 @@
   transition: color 0.2s ease, scale 0.2s ease;
 }
 
-.toc a:hover + a + a,
-.toc a:has(+ a + a:hover),
-.toc a:has(+ a:hover) + a {
-  scale: 1.05;
-}
-.toc a:hover + a,
-.toc a:has(+ a:hover) {
-  scale: 1.2;
-}
 .toc a:hover {
-  scale: 1.5;
+  scale: 1.1;
   color: var(--gold);
 }
 
@@ -571,4 +564,27 @@
 }
 .cert:nth-child(3) .cert-icon {
     content: var(--ibm);
+}
+
+.svg-path {
+  position: absolute;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  fill: var(--bg);  
+  top: -2.5%;
+  left: 65%;
+  height: 105%;
+  /* transition: fill 0.2s ease; */
+}
+
+.svg-path svg {
+  height: 100%;
+  width: auto;
+}
+
+.toronto, .imperial {
+  display: flex;
+  border: solid 2px var(--bg-text);
+  min-height: 200px;
 }

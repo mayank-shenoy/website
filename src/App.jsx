@@ -2,13 +2,13 @@ import Lanyard from './component/Lanyard-updated';
 import {FaGithub, FaLinkedin, FaOrcid, FaEnvelope, FaArrowRightLong, FaChevronDown, FaGit, FaGitAlt, FaGithubAlt, FaGoogle } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
+
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger, SplitText, ScrambleTextPlugin } from 'gsap/all';
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
-import { FaGithubSquare } from 'react-icons/fa';
 
 
 function App() {
@@ -88,6 +88,10 @@ function App() {
 
 
     // HERO TO SIDEBAR ANIMATION
+    const link1 = document.getElementById('introduction-link');
+    const posY = link1.getBoundingClientRect().top + link1.getBoundingClientRect().height;
+    let posPercent = posY / window.innerHeight * 100;
+
     const headerSplit = new SplitText(headerRef.current, {type: 'chars'});
     gsap.set(headerSplit.chars, { yPercent: 25, opacity: 0});
     gsap.set('.toc > *', { opacity: 0, visibility: 'hidden' });
@@ -113,6 +117,8 @@ function App() {
     tl.to(heroRef.current, {
       width: '25%',
       '--pos': '100%',
+      '--ht': '2rem',
+      '--t': `${posPercent}%`,
       duration: 1,
       ease: 'power2.inOut',
     });
@@ -321,6 +327,25 @@ function App() {
       });
     });
 
+
+    // STROKE PATH ANIMATION
+    const strokePath = document.getElementById('stroke-path');
+    const pathLength = strokePath.getTotalLength();
+    strokePath.style.strokeDasharray = pathLength;
+    strokePath.style.strokeDashoffset = pathLength;
+
+    gsap.to(strokePath, {
+      strokeDashoffset: 0,
+      ease: 'power1.in',
+      scrollTrigger: {
+        trigger: '#academic-journey',
+        start: 'top 75%',
+        end: 'bottom bottom',
+        scrub: true,
+        markers: true,
+      },
+    });
+
   });
 
 
@@ -523,6 +548,36 @@ function App() {
           <div className="section pinned alt" id="academic-journey">
             <p className="alt-tag">05/06</p>
             <h2>Academic Journey</h2>
+
+            <div className="imperial">
+
+            </div>
+            <div className="toronto">
+
+            </div>
+
+            <div className="svg-path">
+                <svg width="105" height="400" viewBox="0 0 105 405" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path id="stroke-path" d="M59.9099 2.5
+                    C59.9099 2.5 59.3602 75.7807 54.5 100.054
+                    C45 147.5 4.24952 155.423 2.5582 197.446
+                    C0.866881 239.469 36.5389 254.488 44.2262 262.225
+                    C56.925 275.006 53.2979 304.946 58.3719 304.946
+                    C60.3915 304.946 61.5829 277.171 62.0722 243.732
+                    C62.8122 193.16 61.9462 129.633 59.9099 129.633
+                    C56.5273 129.633 61.5738 153.37 49.6077 157.699
+                    C38.4857 161.723 16.3963 170.47 16.3963 199.5
+                    C16.3963 226.948 42.1896 242.156 62.0722 243.732
+                    C63.2182 243.823 64.3445 243.869 65.4452 243.869
+                    C87.7683 240.954 102.5 220.066 102.5 199.5
+                    C102.5 177.5 83.2809 167.863 76.8232 157.699
+                    C70.3654 147.535 70.2116 115.221 67.4435 115.221
+                    C64.357 115.221 69.7399 143.468 70.2116 202.149
+                    C70.3023 213.428 69.9605 227.774 69.3491 243.59
+                    C68.0645 243.774 66.7619 243.869 69.3491 243.59
+                    C66.7795 310.058 59.4487 400 59.4487 400" stroke-width="5" stroke-linecap="round" stroke="#F7F7F2"/>
+                </svg>
+            </div>
           </div>
 
           {/* CERTIFICATIONS */}
