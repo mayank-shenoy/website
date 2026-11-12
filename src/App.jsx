@@ -143,62 +143,68 @@ function App() {
       scrambleText: {
         text: "Who am I?",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
     }, 0.35)
       .to("#research-link", {
       scrambleText: {
         text: "Research",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
-    })
+    }, 0.5)
       .to("#talks-papers-link", {
       scrambleText: {
         text: "Talks & Papers",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
-    })
+    }, 0.65)
       .to("#projects-link", {
       scrambleText: {
         text: "Projects",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
-    })
+    }, 0.8)
       .to("#academic-journey-link", {
       scrambleText: {
         text: "Academic Journey",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
-    })
+    }, 0.95)
       .to("#certifications-link", {
       scrambleText: {
         text: "Certifications",
         revealDelay: 0.1,
+        chars: "upperAndLowerCase",
       },
       opacity: 1,
       visibility: 'visible',
-      duration: 0.15,
+      duration: 0.25,
       ease: 'none',
-    });
+    }, 1.1);
 
     tl2.from(footerRef.current, {
       yPercent: 25,
@@ -341,6 +347,24 @@ function App() {
       },
     });
 
+
+    // HOVER SCRAMBLE ANIMATION
+    gsap.utils.toArray(".scramble").forEach((element) => {
+      const originalText = element.textContent;
+
+      element.addEventListener("mouseover", () => {
+        gsap.to(element, {
+          scrambleText: {
+            text: originalText,
+            revealDelay: 0.2,
+            chars: "upperAndLowerCase",
+          },
+          duration: 0.4,
+          ease: "none",
+        });
+      });
+    });
+
   });
 
 
@@ -391,12 +415,12 @@ function App() {
           <h2><a href="#top">Mayank<br/>Shenoy</a></h2>
         </div>
         <nav className="toc" ref={tocRef}>
-          <a href="#introduction" id="introduction-link">Who am I?</a>
-          <a href="#research" id="research-link">Research </a>
-          <a href="#talks-papers" id="talks-papers-link">Talks & Papers </a>
-          <a href="#projects" id="projects-link">Projects </a>
-          <a href="#academic-journey" id="academic-journey-link">Academic Journey </a>
-          <a href="#certifications" id="certifications-link">Certifications </a>
+          <a href="#introduction" className="scramble" id="introduction-link">Who am I?</a>
+          <a href="#research" className="scramble" id="research-link">Research </a>
+          <a href="#talks-papers" className="scramble" id="talks-papers-link">Talks & Papers </a>
+          <a href="#projects" className="scramble" id="projects-link">Projects </a>
+          <a href="#academic-journey" className="scramble" id="academic-journey-link">Academic Journey </a>
+          <a href="#certifications" className="scramble" id="certifications-link">Certifications </a>
         </nav>
         <div className="footer" ref={footerRef}>
           <div className="icon-links">
@@ -454,7 +478,12 @@ function App() {
                     supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
                   </p> */}
                 <div className="pill">
-                  <span>PIC</span> <span>Tristan-MPv2</span> <span>Fortran</span> <span>Python</span> <span>h5py</span> <span>HPC</span> 
+                  <span className='scramble'>PIC</span> 
+                  <span className='scramble'>Tristan-MPv2</span> 
+                  <span className='scramble'>Fortran</span> 
+                  <span className='scramble'>Python</span> 
+                  <span className='scramble'>h5py</span> 
+                  <span className='scramble'>HPC</span> 
                 </div>
               </div>
               <div className="carousel" id="carousel-1">
@@ -480,7 +509,12 @@ function App() {
                   supermassive black holes found at the ecentre of Active Galacitic Nuclei (AGN).
                 </p> */}
                 <div className="pill">
-                  <span>GRMHD</span> <span>Athena++</span> <span>C++</span> <span>Python</span> <span>yt</span> <span>HPC</span> 
+                  <span className='scramble'>GRMHD</span> 
+                  <span className='scramble'>Athena++</span> 
+                  <span className='scramble'>C++</span> 
+                  <span className='scramble'>Python</span> 
+                  <span className='scramble'>yt</span> 
+                  <span className='scramble'>HPC</span> 
                 </div>
               </div>
               <div className="carousel" id="carousel-2">
@@ -514,7 +548,11 @@ function App() {
                   <a href=""> Signal Classification with Convolutional Neural Networks <span className="external-link" aria-hidden="true"> <FaGithub/></span> </a>
                 </h3>
                 <div className="pill">
-                  <span>PyTorch</span> <span>scikit-learn</span> <span>NumPy</span> <span>SciPy</span> <span>Python</span>
+                  <span className='scramble'>PyTorch</span> 
+                  <span className='scramble'>scikit-learn</span> 
+                  <span className='scramble'>NumPy</span> 
+                  <span className='scramble'>SciPy</span> 
+                  <span className='scramble'>Python</span>
                 </div>
               </div>
               <p className="project-desc">
@@ -529,7 +567,11 @@ function App() {
                   <a href=""> Boson Decay Classification with Gradient Boosted Decision Trees  <span className="external-link" aria-hidden="true"> <FaGithub/></span> </a>
                 </h3>
                 <div className="pill">
-                  <span>XGBoost</span> <span>scikit-learn</span> <span>Pandas</span> <span>NumPy</span> <span>Python</span>
+                  <span className='scramble'>XGBoost</span> 
+                  <span className='scramble'>scikit-learn</span> 
+                  <span className='scramble'>Pandas</span> 
+                  <span className='scramble'>NumPy</span> 
+                  <span className='scramble'>Python</span>
                 </div>
               </div>
               <p className="project-desc">
