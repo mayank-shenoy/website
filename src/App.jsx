@@ -252,7 +252,6 @@ function App() {
           end: () => `44% ${carouselPos(0.5)}`,
           scrub: true,
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
 
@@ -270,7 +269,6 @@ function App() {
           end: () => `56% ${carouselPos(0.125)}`,
           scrub: true,
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
     });
@@ -304,7 +302,6 @@ function App() {
           end: () => `56% ${carouselPos(0.5)}`,
           scrub: true,
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
 
@@ -322,7 +319,6 @@ function App() {
           end: () => `44% ${carouselPos(0.875)}`,
           scrub: true,
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
     });
@@ -339,10 +335,9 @@ function App() {
       ease: 'power1.in',
       scrollTrigger: {
         trigger: '#academic-journey',
-        start: 'top 75%',
-        end: 'bottom bottom',
+        start: 'top 85%',
+        end: 'top 15%',
         scrub: true,
-        markers: true,
       },
     });
 
@@ -548,16 +543,37 @@ function App() {
           <div className="section pinned alt" id="academic-journey">
             <p className="alt-tag">05/06</p>
             <h2>Academic Journey</h2>
-
-            <div className="imperial">
-
+            <div className="school">
+              <div className="school-left">
+                <p className="tag2">2025-2026</p>
+                <h3>Imperial College London</h3>
+                <p>MSc in Physics</p>
+              </div>
+              <div className="school-right">
+                <ul>
+                  <li>Graduating with Merit</li>
+                  <li>MSc Physics Programme Student Representative </li>
+                </ul>
+              </div>
             </div>
-            <div className="toronto">
-
+            <div className="school">
+              <div className="school-left">
+                <p className="tag2">2020-2024</p>
+                <h3>University of Toronto</h3>
+                <p>HBSc in Astronomy and Physics</p>
+              </div>
+              <div className="school-right">
+                <ul>
+                  <li>Graduated with High Distinction</li>
+                  <li>Dean's List Scholar (2022-24)</li>
+                  <li>Karl S Bernhadt Scholarship (2022)</li>
+                  <li>Regents In-Course Scholarship (2022)</li>
+                  <li>Donald Macrae Scholarship in Astronomy and Astrophysics (2021)</li>
+                </ul>
+              </div>
             </div>
-
             <div className="svg-path">
-                <svg width="105" height="400" viewBox="0 0 105 405" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 105 405" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path id="stroke-path" d="M59.9099 2.5
                     C59.9099 2.5 59.3602 75.7807 54.5 100.054
                     C45 147.5 4.24952 155.423 2.5582 197.446
@@ -578,6 +594,15 @@ function App() {
                     C66.7795 310.058 59.4487 400 59.4487 400" stroke-width="5" stroke-linecap="round" stroke="#F7F7F2"/>
                 </svg>
             </div>
+            {/* <div className="svg-clip">
+              <svg viewBox="0 0 63 399" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <clipPath id="clip-path" clipPathUnits="userSpaceOnUse">
+                    <path d="M62.5098 0C62.5098 156 1.42031 124.5 0.509789 194.5C-0.400733 274.59 62.5095 236.5 62.5098 399Z62.5098 0" stroke="#F7F7F2"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div> */}
           </div>
 
           {/* CERTIFICATIONS */}
