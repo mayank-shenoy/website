@@ -365,6 +365,46 @@ function App() {
       });
     });
 
+
+    // NAVBAR ANIMATION
+    gsap.utils.toArray(".section").forEach((element) => {
+      const sectionId = element.getAttribute("id");
+      const link = document.querySelector(`#${sectionId}-link`);
+      let edgeTween;
+
+      gsap.set(link, {'yOffset': '-100%'});
+      ScrollTrigger.create({
+        trigger: element,
+        start: "top center",
+        end: "bottom center",
+        scrub: true,
+        onUpdate: (self) => {
+          if (edgeTween?.isActive()) return;
+
+          const offset = -100 + self.progress * 100;
+          gsap.set(link, { '--yOffset': offset });
+        },
+        onLeave: () => {
+          edgeTween?.kill();
+
+          gsap.to(link, { '--yOffset': '100%', duration: 0.25, ease: "power2.inOut" });
+        },
+        onEnterBack: (self) => {
+          edgeTween?.kill();
+          
+          const offset = -100 + self.progress * 100;
+          edgeTween = gsap.fromTo(link, {
+            '--yOffset': "100%"
+          }, { 
+            '--yOffset': offset, 
+            duration: 0.1, 
+            ease: "power2.inOut",
+          });
+        },
+        markers: true,
+      });
+    });
+
   });
 
 
@@ -398,7 +438,7 @@ function App() {
     {/* NOISE TEXTURE */}
     <div className="noise" aria-hidden="true" />
 
-    {/* HERO SECTION */}
+    {/* HERO */}
       <div className="hero" id="hero" ref={heroRef}>
         <h1 ref={titleRef}>
           <span id="first">Hello! </span>
@@ -415,12 +455,13 @@ function App() {
           <h2><a href="#top">Mayank<br/>Shenoy</a></h2>
         </div>
         <nav className="toc" ref={tocRef}>
+          <div className="cross-hair" />
           <a href="#introduction" className="scramble" id="introduction-link">Who am I?</a>
-          <a href="#research" className="scramble" id="research-link">Research </a>
-          <a href="#talks-papers" className="scramble" id="talks-papers-link">Talks & Papers </a>
-          <a href="#projects" className="scramble" id="projects-link">Projects </a>
-          <a href="#academic-journey" className="scramble" id="academic-journey-link">Academic Journey </a>
-          <a href="#certifications" className="scramble" id="certifications-link">Certifications </a>
+          <a href="#research" className="scramble" id="research-link">Research</a>
+          <a href="#talks-papers" className="scramble" id="talks-papers-link">Talks & Papers</a>
+          <a href="#projects" className="scramble" id="projects-link">Projects</a>
+          <a href="#academic-journey" className="scramble" id="academic-journey-link">Academic Journey</a>
+          <a href="#certifications" className="scramble" id="certifications-link">Certifications</a>
         </nav>
         <div className="footer" ref={footerRef}>
           <div className="icon-links">
@@ -533,7 +574,7 @@ function App() {
           </div>
 
         {/* TALKS & PAPERS */}
-          <div className="section pinned alt" id="talks-papers">
+          <div className="section alt pinned" id="talks-papers">
             <p className="alt-tag">03/06</p>
             <h2>Talks & Papers</h2>
           </div>
@@ -582,7 +623,7 @@ function App() {
           </div>       
 
           {/* ACADEMIC JOURNEY */}
-          <div className="section pinned alt" id="academic-journey">
+          <div className="section alt pinned" id="academic-journey">
             <p className="alt-tag">05/06</p>
             <h2>Academic Journey</h2>
             <div className="school">
