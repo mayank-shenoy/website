@@ -173,34 +173,82 @@
 
 .toc a {
   --yOffset: -100%;
+  --alpha: 0;
+
   position: relative;
   display: flex;
+  isolation: isolate;
+
   border: none;
   color: var(--header-text);
   transform-origin: right;
   padding: 0.5rem 0.5rem;
   overflow: hidden;
-  mask-image: linear-gradient(to top, var(--header-text) 0%, var(--header-text) var(--yOffset), var(--header) var(--yOffset), var(--header) 100%);
-
-  will-change: var(--yOffset);
-}
-
-/* .primary, 
-.secondary {
-  position: relative;
-}
-
-.secondary {
-  position: absolute;
-  inset: 0;
-  color: var(--header);
   mask-image: linear-gradient(
     to top,
-    black 0%,
-    black calc(100% + var(--yOffset)),
-    transparent calc(100% + var(--yOffset))
+    var(--header-text) 0%,
+    var(--header-text) var(--yOffset),
+    var(--header) var(--yOffset),
+    var(--header) 100%
   );
-} */
+
+  will-change: mask-image, scale;
+
+}
+
+.toc a > .primary {
+  color: var(--header-text);
+  position: relative;
+  display: block;
+  white-space: nowrap;
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent calc(100% + var(--yOffset)),
+    white calc(100% + var(--yOffset))
+  );
+
+  will-change: mask-image, scale;
+}
+
+.toc a.post > .primary {
+  mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    transparent calc(100% - var(--yOffset)),
+    white calc(100% - var(--yOffset))
+  );
+}
+
+.toc a > .secondary {
+  color: var(--header);
+  position: absolute;
+
+  display: block;
+  color: var(--header);
+  white-space: nowrap;
+  pointer-events: none;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black 0%,
+      black calc(100% + var(--yOffset)),
+      transparent calc(100% + var(--yOffset))
+    ),
+    linear-gradient(
+      to top,
+      black 0%,
+      black calc(100% - var(--yOffset)),
+      transparent calc(100% - var(--yOffset))
+    );
+
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+
+  will-change: mask-image, scale;
+}
 
 .toc a::before {
   content: "";
@@ -210,16 +258,16 @@
   width: 100%;
   height: 100%;
   z-index: -1;
+  opacity: var(--alpha);
   background-color: var(--gold);
   transform: translateY(var(--yOffset));
   
   will-change: transform;
 }
 
-/* .toc a:hover {
+.toc a:hover {
   scale: 1.1;
-  color: var(--gold);
-} */
+}
 
 .cross-hair {
   position: absolute;

@@ -139,72 +139,115 @@ function App() {
       visibility: 'visible',
     }, 0);
 
-    tl2.to("#introduction-link", {
-      scrambleText: {
-        text: "Who am I?",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 0.35)
-      .to("#research-link", {
-      scrambleText: {
-        text: "Research",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 0.5)
-      .to("#talks-papers-link", {
-      scrambleText: {
-        text: "Talks & Papers",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 0.65)
-      .to("#projects-link", {
-      scrambleText: {
-        text: "Projects",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 0.8)
-      .to("#academic-journey-link", {
-      scrambleText: {
-        text: "Academic Journey",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 0.95)
-      .to("#certifications-link", {
-      scrambleText: {
-        text: "Certifications",
-        revealDelay: 0.1,
-        chars: "upperAndLowerCase",
-      },
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.25,
-      ease: 'none',
-    }, 1.1);
+    const navItems = [
+      ["introduction-link", "Who am I?", 0.35],
+      ["research-link", "Research", 0.50],
+      ["talks-papers-link", "Talks & Papers", 0.65],
+      ["projects-link", "Projects", 0.80],
+      ["academic-journey-link", "Academic Journey", 0.95],
+      ["certifications-link", "Certifications", 1.10],
+    ];
+
+    navItems.forEach(([id, text, position]) => {
+      const link = document.getElementById(id);
+      const primary = link.querySelector(".primary");
+      const secondary = link.querySelector(".secondary");
+
+      // Reveal the anchor independently of its text.
+      tl2.to(link, {
+        opacity: 1,
+        visibility: "visible",
+        duration: 0.25,
+        ease: "none",
+      }, position);
+
+      // Scramble only the primary span.
+      tl2.to(primary, {
+        scrambleText: {
+          text,
+          revealDelay: 0.1,
+          chars: "upperAndLowerCase",
+        },
+        duration: 0.25,
+        ease: "none",
+
+        onUpdate: () => {
+          secondary.textContent = primary.textContent;
+        },
+
+        onComplete: () => {
+          primary.textContent = text;
+          secondary.textContent = text;
+        },
+      }, position);
+    });
+
+    // tl2.to("#introduction-link", {
+    //   scrambleText: {
+    //     text: "Who am I?",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 0.35)
+    //   .to("#research-link", {
+    //   scrambleText: {
+    //     text: "Research",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 0.5)
+    //   .to("#talks-papers-link", {
+    //   scrambleText: {
+    //     text: "Talks & Papers",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 0.65)
+    //   .to("#projects-link", {
+    //   scrambleText: {
+    //     text: "Projects",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 0.8)
+    //   .to("#academic-journey-link", {
+    //   scrambleText: {
+    //     text: "Academic Journey",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 0.95)
+    //   .to("#certifications-link", {
+    //   scrambleText: {
+    //     text: "Certifications",
+    //     revealDelay: 0.1,
+    //     chars: "upperAndLowerCase",
+    //   },
+    //   opacity: 1,
+    //   visibility: 'visible',
+    //   duration: 0.25,
+    //   ease: 'none',
+    // }, 1.1);
 
     tl2.from(footerRef.current, {
       yPercent: 25,
@@ -348,11 +391,43 @@ function App() {
     });
 
 
-    // HOVER SCRAMBLE ANIMATION
-    gsap.utils.toArray(".scramble").forEach((element) => {
-      const originalText = element.textContent;
+    // HOVER SCRAMBLE ANIMATION - NAVBAR LINKS
+    gsap.utils.toArray(".toc a.scramble").forEach((link) => {
+      const primary = link.querySelector(".primary");
+      const secondary = link.querySelector(".secondary");
 
-      element.addEventListener("mouseover", () => {
+      const originalText = primary.textContent.trim();
+
+      link.addEventListener("mouseenter", () => {
+        gsap.killTweensOf(primary);
+        gsap.to(primary, {
+          scrambleText: {
+            text: originalText,
+            revealDelay: 0.2,
+            chars: "upperAndLowerCase",
+          },
+          duration: 0.4,
+          ease: "none",
+          onUpdate: () => {
+            secondary.textContent = primary.textContent;
+          },
+          onComplete: () => {
+            primary.textContent = originalText;
+            secondary.textContent = originalText;
+          },
+        });
+      });
+    });
+
+    // HOVER SCRAMBLE ANIMATION - PILL ELEMENTS
+    gsap.utils.toArray(".scramble").forEach((element) => {
+      if (element.closest(".toc a.scramble")) return;
+
+      const originalText = element.textContent.trim();
+
+      element.addEventListener("mouseenter", () => {
+        gsap.killTweensOf(element);
+
         gsap.to(element, {
           scrambleText: {
             text: originalText,
@@ -367,12 +442,12 @@ function App() {
 
 
     // NAVBAR ANIMATION
-    gsap.utils.toArray(".section").forEach((element) => {
+    gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
       const sectionId = element.getAttribute("id");
       const link = document.querySelector(`#${sectionId}-link`);
       let edgeTween;
 
-      gsap.set(link, {'yOffset': '-100%'});
+      gsap.set(link, {'--yOffset': '-100%', '--alpha': '0'});
       ScrollTrigger.create({
         trigger: element,
         start: "top center",
@@ -382,26 +457,41 @@ function App() {
           if (edgeTween?.isActive()) return;
 
           const offset = -100 + self.progress * 100;
-          gsap.set(link, { '--yOffset': offset });
+          gsap.set(link, { '--yOffset': offset, '--alpha': '1' });
         },
         onLeave: () => {
           edgeTween?.kill();
 
-          gsap.to(link, { '--yOffset': '100%', duration: 0.25, ease: "power2.inOut" });
+          gsap.to(link, { 
+            '--yOffset': '100%', 
+            duration: 0.25, 
+            ease: "power2.inOut",
+            onComplete: () => {
+              gsap.set(link, { '--alpha': '0' });
+              link.classList.add("post");
+            } 
+          });
         },
         onEnterBack: (self) => {
           edgeTween?.kill();
           
+          link.classList.remove("post");
           const offset = -100 + self.progress * 100;
           edgeTween = gsap.fromTo(link, {
-            '--yOffset': "100%"
+            '--yOffset': "100%",
+            '--alpha': '0',
           }, { 
             '--yOffset': offset, 
+            '--alpha': '1',
             duration: 0.1, 
             ease: "power2.inOut",
           });
         },
-        markers: true,
+        onLeaveBack: () => {
+          edgeTween?.kill();
+
+          gsap.set(link, { '--alpha': '0' });
+        }
       });
     });
 
@@ -456,12 +546,30 @@ function App() {
         </div>
         <nav className="toc" ref={tocRef}>
           <div className="cross-hair" />
-          <a href="#introduction" className="scramble" id="introduction-link">Who am I?</a>
-          <a href="#research" className="scramble" id="research-link">Research</a>
-          <a href="#talks-papers" className="scramble" id="talks-papers-link">Talks & Papers</a>
-          <a href="#projects" className="scramble" id="projects-link">Projects</a>
-          <a href="#academic-journey" className="scramble" id="academic-journey-link">Academic Journey</a>
-          <a href="#certifications" className="scramble" id="certifications-link">Certifications</a>
+          <a href="#introduction" className="scramble" id="introduction-link">
+            <span className="primary">Who am I?</span>
+            <span className="secondary" aria-hidden="true">Who am I?</span>
+          </a>
+          <a href="#research" className="scramble" id="research-link">
+            <span className="primary">Research</span>
+            <span className="secondary" aria-hidden="true">Research</span>
+          </a>
+          <a href="#talks-papers" className="scramble" id="talks-papers-link">
+            <span className="primary">Talks & Papers</span>
+            <span className="secondary" aria-hidden="true">Talks & Papers</span>
+          </a>
+          <a href="#projects" className="scramble" id="projects-link">
+            <span className="primary">Projects</span>
+            <span className="secondary" aria-hidden="true">Projects</span>
+          </a>
+          <a href="#academic-journey" className="scramble" id="academic-journey-link">
+            <span className="primary">Academic Journey</span>
+            <span className="secondary" aria-hidden="true">Academic Journey</span>
+          </a>
+          <a href="#certifications" className="scramble" id="certifications-link">
+            <span className="primary">Certifications</span>
+            <span className="secondary" aria-hidden="true">Certifications</span>
+          </a>
         </nav>
         <div className="footer" ref={footerRef}>
           <div className="icon-links">
