@@ -391,175 +391,31 @@ function App() {
     });
 
 
-    // HOVER SCRAMBLE ANIMATION - NAVBAR LINKS
-    // gsap.utils.toArray(".toc a.scramble").forEach((link) => {
-    //   const primary = link.querySelector(".primary");
-    //   const secondary = link.querySelector(".secondary");
+    // HOVER SCRAMBLE ANIMATION
+    gsap.utils.toArray(".scramble").forEach((element) => {
+      const originalText = element.textContent.trim();
+      element.setAttribute("data-text", originalText);
 
-    //   const originalText = primary.textContent.trim();
-
-    //   link.addEventListener("mouseenter", () => {
-    //     gsap.killTweensOf(primary);
-    //     gsap.to(primary, {
-    //       scrambleText: {
-    //         text: originalText,
-    //         revealDelay: 0.2,
-    //         chars: "upperAndLowerCase",
-    //       },
-    //       duration: 0.4,
-    //       ease: "none",
-    //       onUpdate: () => {
-    //         secondary.textContent = primary.textContent;
-    //       },
-    //       onComplete: () => {
-    //         primary.textContent = originalText;
-    //         secondary.textContent = originalText;
-    //       },
-    //     });
-    //   });
-    // });
-
-    // HOVER SCRAMBLE ANIMATION - PILL ELEMENTS
-    // gsap.utils.toArray(".scramble").forEach((element) => {
-    //   if (element.closest(".toc a.scramble")) return;
-
-    //   const originalText = element.textContent.trim();
-
-    //   element.addEventListener("mouseenter", () => {
-    //     gsap.killTweensOf(element);
-
-    //     gsap.to(element, {
-    //       scrambleText: {
-    //         text: originalText,
-    //         revealDelay: 0.2,
-    //         chars: "upperAndLowerCase",
-    //       },
-    //       duration: 0.4,
-    //       ease: "none",
-    //     });
-    //   });
-    // });
-
-
-    // NAVBAR ANIMATION
-    // gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
-    //   const sectionId = element.getAttribute("id");
-    //   const link = document.querySelector(`#${sectionId}-link`);
-    //   let edgeTween;
-
-    //   gsap.set(link, {'--yOffset': '-100%', '--alpha': '0'});
-    //   ScrollTrigger.create({
-    //     trigger: element,
-    //     start: "top center",
-    //     end: "bottom center",
-    //     scrub: true,
-    //     onUpdate: (self) => {
-    //       if (edgeTween?.isActive()) return;
-
-    //       const offset = -100 + self.progress * 100;
-    //       gsap.set(link, { '--yOffset': offset, '--alpha': '1' });
-    //     },
-    //     onLeave: () => {
-    //       edgeTween?.kill();
-
-    //       gsap.to(link, { 
-    //         '--yOffset': '100%', 
-    //         duration: 0.25, 
-    //         ease: "power2.inOut",
-    //         onComplete: () => {
-    //           gsap.set(link, { '--alpha': '0' });
-    //           link.classList.add("post");
-    //         } 
-    //       });
-    //     },
-    //     onEnterBack: (self) => {
-    //       edgeTween?.kill();
-          
-    //       link.classList.remove("post");
-    //       const offset = -100 + self.progress * 100;
-    //       edgeTween = gsap.fromTo(link, {
-    //         '--yOffset': "100%",
-    //         '--alpha': '0',
-    //       }, { 
-    //         '--yOffset': offset, 
-    //         '--alpha': '1',
-    //         duration: 0.1, 
-    //         ease: "power2.inOut",
-    //       });
-    //     },
-    //     onLeaveBack: () => {
-    //       edgeTween?.kill();
-
-    //       gsap.set(link, { '--alpha': '0' });
-    //     }
-    //   });
-    // });
-
-    // gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
-    //   const sectionId = element.getAttribute("id");
-    //   const link = document.querySelector(`#${sectionId}-link`);
-
-    //   gsap.set(link, {'--progress': '100%'});
-    //   ScrollTrigger.create({
-    //     trigger: element,
-    //     start: "top center",
-    //     end: "bottom center",
-    //     scrub: true,
-    //     onUpdate: (self) => {
-    //       const offset = 100 - 100*self.progress
-    //       gsap.set(link, { '--progress': offset })
-    //     },
-    //     onLeave: () => {
-    //       gsap.fromTo(link, {
-    //         '--reverse': "0%",
-    //       }, {
-    //         '--reverse': "100%",
-    //         duration: 0.25,
-    //         ease: "power2.inOut"
-    //       });
-    //     },
-    //     onEnterBack: (self) => {
-    //       const offset = 100 - 100*self.progress
-    //       gsap.fromTo(link, {
-    //         '--reverse': "100%",
-    //         '--progress': "0%",
-    //       }, {
-    //         '--reverse': "0%",
-    //         '--progress': offset,
-    //         duration: 0.1,
-    //         ease: "power2.inOut"
-    //       });
-    //     },
-    //   });
-    // });
-
-    // gsap.utils.toArray('.section:not(#introduction)').forEach((section) => {
-    //   const link = document.querySelector(`#${section.id}-link`);
-    //   if (!link) return;
-
-    //   const sync = (self) => {
-    //     link.style.setProperty('--progress', `${100 - self.progress * 100}%`);
-    //     link.style.setProperty('--reverse', self.progress === 1 ? '100%' : '0%');
-    //   };
-
-    //   ScrollTrigger.create({
-    //     trigger: section,
-    //     start: 'top center',
-    //     end: 'bottom center',
-    //     invalidateOnRefresh: true,
-    //     onRefresh: sync,
-    //     onUpdate: (self) => {
-    //       link.style.setProperty('--progress', `${100 - self.progress * 100}%`);
-    //     },
-    //     onLeave: () => {
-    //       gsap.to(link, { '--reverse': '100%', duration: 0.25, ease: 'power2.inOut', overwrite: 'auto' });
-    //     },
-    //     onEnterBack: () => {
-    //       gsap.to(link, { '--reverse': '0%', duration: 0.1, ease: 'power2.inOut', overwrite: 'auto' });
-    //     },
-    //   });
-    // });
-
+      element.addEventListener("mouseenter", () => {
+        gsap.to(element, {
+          scrambleText: {
+            text: originalText,
+            revealDelay: 0.2,
+            chars: "upperAndLowerCase",
+          },
+          duration: 0.4,
+          ease: "none",
+          onUpdate: () => {
+            element.setAttribute("data-text", element.textContent);
+          },
+          onComplete: () => {
+            element.textContent = originalText;
+            element.setAttribute("data-text", originalText);
+          },
+        });
+      });
+    });
+    
 
     // NAVBAR ANIMATION - IMPROVED VERSION
     const sections = gsap.utils.toArray('.section:not(#introduction)');
@@ -658,18 +514,19 @@ function App() {
         tlNav.set(items[t].link, { '--progress': '100%', '--reverse': '0%' })
           .to(items[t].link, { '--progress': `${100 - pt * 100}%`, duration: 0.1 * pt, ease: 'none' });
       } else {
+        
         // UP: wipe in to full, then drain
         if (cActive) tlNav.set(items[c].link, { '--progress': '100%', '--reverse': '0%' });   // instant reset
         const top = cActive ? c - 1 : c;
         for (let k = top; k > t; k--) {
           tlNav.set(items[k].link, { '--progress': '0%', '--reverse': '100%' })
             .to(items[k].link, { '--reverse': '0%', duration: 0.1, ease: 'power2.out' })
-            .to(items[k].link, { '--progress': '100%', duration: 0.2, ease: 'power2.inOut' });
+            .to(items[k].link, { '--progress': '100%', duration: 0.1, ease: 'power2.inOut' });
         }
         if (t >= 0) {
           tlNav.set(items[t].link, { '--progress': '0%', '--reverse': '100%' })
             .to(items[t].link, { '--reverse': '0%', duration: 0.1, ease: 'power2.out' })
-            .to(items[t].link, { '--progress': `${100 - pt * 100}%`, duration: 0.05 + 0.2 * (1 - pt), ease: 'power2.inOut' });
+            .to(items[t].link, { '--progress': `${100 - pt * 100}%`, duration: 0.1 * (1 - pt), ease: 'power2.inOut' });
         }
       }
 
@@ -691,7 +548,7 @@ function App() {
       secondSplit.revert();
       headerSplit.revert();
     };
-    
+
   }, []);
 
 
@@ -743,12 +600,12 @@ function App() {
         </div>
         <nav className="toc" ref={tocRef}>
           <div className="cross-hair" />
-          <a href="#introduction" className="scramble" data-text="Who am I?" id="introduction-link">Who am I?</a>
-          <a href="#research" className="scramble" data-text="Research" id="research-link">Research </a>
-          <a href="#talks-papers" className="scramble" data-text="Talks & Papers" id="talks-papers-link">Talks & Papers </a>
-          <a href="#projects" className="scramble" data-text="Projects" id="projects-link">Projects </a>
-          <a href="#academic-journey" className="scramble" data-text="Academic Journey" id="academic-journey-link">Academic Journey </a>
-          <a href="#certifications" className="scramble" data-text="Certifications" id="certifications-link">Certifications </a>
+          <a href="#introduction" className="scramble" id="introduction-link">Who am I?</a>
+          <a href="#research" className="scramble" id="research-link">Research </a>
+          <a href="#talks-papers" className="scramble" id="talks-papers-link">Talks & Papers </a>
+          <a href="#projects" className="scramble" id="projects-link">Projects </a>
+          <a href="#academic-journey" className="scramble" id="academic-journey-link">Academic Journey </a>
+          <a href="#certifications" className="scramble" id="certifications-link">Certifications </a>
         </nav>
         <div className="footer" ref={footerRef}>
           <div className="icon-links">
