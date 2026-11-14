@@ -172,7 +172,8 @@
 }
 
 .toc a {
-  --yOffset: -100%;
+  --progress: 100%;
+  --reverse: 0%;
   --alpha: 0;
 
   position: relative;
@@ -184,86 +185,25 @@
   transform-origin: right;
   padding: 0.5rem 0.5rem;
   overflow: hidden;
-  mask-image: linear-gradient(
-    to top,
-    var(--header-text) 0%,
-    var(--header-text) var(--yOffset),
-    var(--header) var(--yOffset),
-    var(--header) 100%
-  );
-
-  will-change: mask-image, scale;
-
 }
 
-.toc a > .primary {
-  color: var(--header-text);
-  position: relative;
-  display: block;
-  white-space: nowrap;
-
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent calc(100% + var(--yOffset)),
-    white calc(100% + var(--yOffset))
-  );
-
-  will-change: mask-image, scale;
-}
-
-.toc a.post > .primary {
-  mask-image: linear-gradient(
-    to top,
-    transparent 0%,
-    transparent calc(100% - var(--yOffset)),
-    white calc(100% - var(--yOffset))
-  );
-}
-
-.toc a > .secondary {
+.toc a::after {
+  content: attr(data-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--header);
-  position: absolute;
-
-  display: block;
-  color: var(--header);
-  white-space: nowrap;
-  pointer-events: none;
-
-  mask-image:
-    linear-gradient(
-      to bottom,
-      black 0%,
-      black calc(100% + var(--yOffset)),
-      transparent calc(100% + var(--yOffset))
-    ),
-    linear-gradient(
-      to top,
-      black 0%,
-      black calc(100% - var(--yOffset)),
-      transparent calc(100% - var(--yOffset))
-    );
-
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
-
-  will-change: mask-image, scale;
-}
-
-.toc a::before {
-  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  opacity: var(--alpha);
+  z-index: 10;
   background-color: var(--gold);
-  transform: translateY(var(--yOffset));
-  
-  will-change: transform;
+  clip-path: inset(var(--reverse) 0 var(--progress) 0); 
+  /* clip-path: inset(50% 0 0% 0); */
 }
+
 
 .toc a:hover {
   scale: 1.1;

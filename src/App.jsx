@@ -61,7 +61,7 @@ function App() {
     }, 1);
 
     const secondSplit = SplitText.create('#second', {
-      type: ' words, chars',
+      type: 'words,chars',                      // changed: no spaces in the string
       autoSplit: true,
       onSplit(self) {
         const n = self.chars.length;
@@ -392,110 +392,307 @@ function App() {
 
 
     // HOVER SCRAMBLE ANIMATION - NAVBAR LINKS
-    gsap.utils.toArray(".toc a.scramble").forEach((link) => {
-      const primary = link.querySelector(".primary");
-      const secondary = link.querySelector(".secondary");
+    // gsap.utils.toArray(".toc a.scramble").forEach((link) => {
+    //   const primary = link.querySelector(".primary");
+    //   const secondary = link.querySelector(".secondary");
 
-      const originalText = primary.textContent.trim();
+    //   const originalText = primary.textContent.trim();
 
-      link.addEventListener("mouseenter", () => {
-        gsap.killTweensOf(primary);
-        gsap.to(primary, {
-          scrambleText: {
-            text: originalText,
-            revealDelay: 0.2,
-            chars: "upperAndLowerCase",
-          },
-          duration: 0.4,
-          ease: "none",
-          onUpdate: () => {
-            secondary.textContent = primary.textContent;
-          },
-          onComplete: () => {
-            primary.textContent = originalText;
-            secondary.textContent = originalText;
-          },
-        });
-      });
-    });
+    //   link.addEventListener("mouseenter", () => {
+    //     gsap.killTweensOf(primary);
+    //     gsap.to(primary, {
+    //       scrambleText: {
+    //         text: originalText,
+    //         revealDelay: 0.2,
+    //         chars: "upperAndLowerCase",
+    //       },
+    //       duration: 0.4,
+    //       ease: "none",
+    //       onUpdate: () => {
+    //         secondary.textContent = primary.textContent;
+    //       },
+    //       onComplete: () => {
+    //         primary.textContent = originalText;
+    //         secondary.textContent = originalText;
+    //       },
+    //     });
+    //   });
+    // });
 
     // HOVER SCRAMBLE ANIMATION - PILL ELEMENTS
-    gsap.utils.toArray(".scramble").forEach((element) => {
-      if (element.closest(".toc a.scramble")) return;
+    // gsap.utils.toArray(".scramble").forEach((element) => {
+    //   if (element.closest(".toc a.scramble")) return;
 
-      const originalText = element.textContent.trim();
+    //   const originalText = element.textContent.trim();
 
-      element.addEventListener("mouseenter", () => {
-        gsap.killTweensOf(element);
+    //   element.addEventListener("mouseenter", () => {
+    //     gsap.killTweensOf(element);
 
-        gsap.to(element, {
-          scrambleText: {
-            text: originalText,
-            revealDelay: 0.2,
-            chars: "upperAndLowerCase",
-          },
-          duration: 0.4,
-          ease: "none",
-        });
-      });
-    });
+    //     gsap.to(element, {
+    //       scrambleText: {
+    //         text: originalText,
+    //         revealDelay: 0.2,
+    //         chars: "upperAndLowerCase",
+    //       },
+    //       duration: 0.4,
+    //       ease: "none",
+    //     });
+    //   });
+    // });
 
 
     // NAVBAR ANIMATION
-    gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
-      const sectionId = element.getAttribute("id");
-      const link = document.querySelector(`#${sectionId}-link`);
-      let edgeTween;
+    // gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
+    //   const sectionId = element.getAttribute("id");
+    //   const link = document.querySelector(`#${sectionId}-link`);
+    //   let edgeTween;
 
-      gsap.set(link, {'--yOffset': '-100%', '--alpha': '0'});
-      ScrollTrigger.create({
-        trigger: element,
-        start: "top center",
-        end: "bottom center",
-        scrub: true,
+    //   gsap.set(link, {'--yOffset': '-100%', '--alpha': '0'});
+    //   ScrollTrigger.create({
+    //     trigger: element,
+    //     start: "top center",
+    //     end: "bottom center",
+    //     scrub: true,
+    //     onUpdate: (self) => {
+    //       if (edgeTween?.isActive()) return;
+
+    //       const offset = -100 + self.progress * 100;
+    //       gsap.set(link, { '--yOffset': offset, '--alpha': '1' });
+    //     },
+    //     onLeave: () => {
+    //       edgeTween?.kill();
+
+    //       gsap.to(link, { 
+    //         '--yOffset': '100%', 
+    //         duration: 0.25, 
+    //         ease: "power2.inOut",
+    //         onComplete: () => {
+    //           gsap.set(link, { '--alpha': '0' });
+    //           link.classList.add("post");
+    //         } 
+    //       });
+    //     },
+    //     onEnterBack: (self) => {
+    //       edgeTween?.kill();
+          
+    //       link.classList.remove("post");
+    //       const offset = -100 + self.progress * 100;
+    //       edgeTween = gsap.fromTo(link, {
+    //         '--yOffset': "100%",
+    //         '--alpha': '0',
+    //       }, { 
+    //         '--yOffset': offset, 
+    //         '--alpha': '1',
+    //         duration: 0.1, 
+    //         ease: "power2.inOut",
+    //       });
+    //     },
+    //     onLeaveBack: () => {
+    //       edgeTween?.kill();
+
+    //       gsap.set(link, { '--alpha': '0' });
+    //     }
+    //   });
+    // });
+
+    // gsap.utils.toArray(".section:not(#introduction)").forEach((element) => {
+    //   const sectionId = element.getAttribute("id");
+    //   const link = document.querySelector(`#${sectionId}-link`);
+
+    //   gsap.set(link, {'--progress': '100%'});
+    //   ScrollTrigger.create({
+    //     trigger: element,
+    //     start: "top center",
+    //     end: "bottom center",
+    //     scrub: true,
+    //     onUpdate: (self) => {
+    //       const offset = 100 - 100*self.progress
+    //       gsap.set(link, { '--progress': offset })
+    //     },
+    //     onLeave: () => {
+    //       gsap.fromTo(link, {
+    //         '--reverse': "0%",
+    //       }, {
+    //         '--reverse': "100%",
+    //         duration: 0.25,
+    //         ease: "power2.inOut"
+    //       });
+    //     },
+    //     onEnterBack: (self) => {
+    //       const offset = 100 - 100*self.progress
+    //       gsap.fromTo(link, {
+    //         '--reverse': "100%",
+    //         '--progress': "0%",
+    //       }, {
+    //         '--reverse': "0%",
+    //         '--progress': offset,
+    //         duration: 0.1,
+    //         ease: "power2.inOut"
+    //       });
+    //     },
+    //   });
+    // });
+
+    // gsap.utils.toArray('.section:not(#introduction)').forEach((section) => {
+    //   const link = document.querySelector(`#${section.id}-link`);
+    //   if (!link) return;
+
+    //   const sync = (self) => {
+    //     link.style.setProperty('--progress', `${100 - self.progress * 100}%`);
+    //     link.style.setProperty('--reverse', self.progress === 1 ? '100%' : '0%');
+    //   };
+
+    //   ScrollTrigger.create({
+    //     trigger: section,
+    //     start: 'top center',
+    //     end: 'bottom center',
+    //     invalidateOnRefresh: true,
+    //     onRefresh: sync,
+    //     onUpdate: (self) => {
+    //       link.style.setProperty('--progress', `${100 - self.progress * 100}%`);
+    //     },
+    //     onLeave: () => {
+    //       gsap.to(link, { '--reverse': '100%', duration: 0.25, ease: 'power2.inOut', overwrite: 'auto' });
+    //     },
+    //     onEnterBack: () => {
+    //       gsap.to(link, { '--reverse': '0%', duration: 0.1, ease: 'power2.inOut', overwrite: 'auto' });
+    //     },
+    //   });
+    // });
+
+
+    // NAVBAR ANIMATION - IMPROVED VERSION
+    const sections = gsap.utils.toArray('.section:not(#introduction)');
+    const clamp01 = gsap.utils.clamp(0, 1);
+    let navigating = false;
+
+    const setVars = (link, progress, reverse) => {
+      link.style.setProperty('--progress', `${progress}%`);
+      link.style.setProperty('--reverse', `${reverse}%`);
+    };
+    const readProgress = (link) => {
+      const v = parseFloat(link.style.getPropertyValue('--progress'));
+      return Number.isNaN(v) ? 100 : v;
+    };
+
+    const items = sections.map((section) => {
+      const link = document.querySelector(`#${section.id}-link`);
+      const set = (n, v) => link.style.setProperty(n, v);
+      let tween = null, enterTween = null, sawMid = false;
+
+      const st = ScrollTrigger.create({
+        trigger: section,
+        start: 'top center',
+        end: 'bottom center',
+        invalidateOnRefresh: true,
+
+        onRefresh: (self) => {
+          if (navigating) return;
+          set('--progress', `${100 - self.progress * 100}%`);
+          set('--reverse', self.progress === 1 ? '100%' : '0%');
+        },
         onUpdate: (self) => {
-          if (edgeTween?.isActive()) return;
-
-          const offset = -100 + self.progress * 100;
-          gsap.set(link, { '--yOffset': offset, '--alpha': '1' });
+          if (navigating || tween?.isActive() || enterTween?.isActive()) return;
+          if (self.progress > 0.01 && self.progress < 0.99) sawMid = true;
+          set('--progress', `${100 - self.progress * 100}%`);
         },
         onLeave: () => {
-          edgeTween?.kill();
-
-          gsap.to(link, { 
-            '--yOffset': '100%', 
-            duration: 0.25, 
-            ease: "power2.inOut",
-            onComplete: () => {
-              gsap.set(link, { '--alpha': '0' });
-              link.classList.add("post");
-            } 
-          });
+          if (navigating) return;
+          sawMid = false;
+          tween?.kill(); enterTween?.kill();
+          tween = gsap.to(link, { '--reverse': '100%', duration: 0.2, ease: 'power2.inOut', overwrite: 'auto' });
         },
-        onEnterBack: (self) => {
-          edgeTween?.kill();
-          
-          link.classList.remove("post");
-          const offset = -100 + self.progress * 100;
-          edgeTween = gsap.fromTo(link, {
-            '--yOffset': "100%",
-            '--alpha': '0',
-          }, { 
-            '--yOffset': offset, 
-            '--alpha': '1',
-            duration: 0.1, 
-            ease: "power2.inOut",
-          });
+        onEnterBack: () => {
+          if (navigating) return;
+          tween?.kill(); enterTween?.kill();
+          sawMid = false;
+          set('--progress', '0%');
+          enterTween = gsap.fromTo(link, { '--reverse': '100%' },
+            { '--reverse': '0%', duration: 0.1, ease: 'power2.inOut', overwrite: 'auto' });
         },
         onLeaveBack: () => {
-          edgeTween?.kill();
-
-          gsap.set(link, { '--alpha': '0' });
-        }
+          if (navigating || sawMid) return;
+          tween?.kill();
+          const wait = enterTween && enterTween.progress() < 1
+            ? enterTween.duration() * (1 - enterTween.progress()) : 0;
+          tween = gsap.fromTo(link, { '--progress': '0%' },
+            { '--progress': '100%', duration: 0.2, delay: wait, ease: 'power2.inOut' });
+        },
       });
+
+      return { section, link, st };
     });
 
-  });
+    const syncAll = () => items.forEach(({ link, st }) => {
+      setVars(link, 100 - st.progress * 100, st.progress === 1 ? 100 : 0);
+    });
+
+    const goTo = (targetEl) => {
+      if (navigating) return;                               // changed: lenis is already in scope
+
+      const t = sections.indexOf(targetEl);                 // -1 for the introduction
+      const y = targetEl.getBoundingClientRect().top + window.scrollY;
+      const c = items.map((i) => i.st.progress > 0).lastIndexOf(true);   // last section reached
+      const cActive = c >= 0 && items[c].st.isActive;
+
+      if (t === c) { lenis.scrollTo(targetEl); return; }    // same section: normal behaviour
+
+      // the progress the target will have at the landing position
+      const pt = t >= 0 ? clamp01((y - items[t].st.start) / (items[t].st.end - items[t].st.start)) : 0;
+
+      navigating = true;
+      const tlNav = gsap.timeline({                         // changed: renamed from tl
+        onComplete: () => { navigating = false; ScrollTrigger.update(); syncAll(); },
+      });
+
+      if (t > c) {
+        // DOWN: fill (from a given level) to full, then wipe out
+        const fillThenWipe = (link, from) => {
+          tlNav.set(link, { '--progress': `${from}%`, '--reverse': '0%' })
+            .to(link, { '--progress': '0%', duration: 0.1 * (from / 100), ease: 'none' })
+            .to(link, { '--reverse': '100%', duration: 0.1, ease: 'power2.inOut' });
+        };
+        if (cActive) fillThenWipe(items[c].link, readProgress(items[c].link));
+        for (let k = c + 1; k < t; k++) fillThenWipe(items[k].link, 100);
+
+        tlNav.set(items[t].link, { '--progress': '100%', '--reverse': '0%' })
+          .to(items[t].link, { '--progress': `${100 - pt * 100}%`, duration: 0.1 * pt, ease: 'none' });
+      } else {
+        // UP: wipe in to full, then drain
+        if (cActive) tlNav.set(items[c].link, { '--progress': '100%', '--reverse': '0%' });   // instant reset
+        const top = cActive ? c - 1 : c;
+        for (let k = top; k > t; k--) {
+          tlNav.set(items[k].link, { '--progress': '0%', '--reverse': '100%' })
+            .to(items[k].link, { '--reverse': '0%', duration: 0.1, ease: 'power2.out' })
+            .to(items[k].link, { '--progress': '100%', duration: 0.2, ease: 'power2.inOut' });
+        }
+        if (t >= 0) {
+          tlNav.set(items[t].link, { '--progress': '0%', '--reverse': '100%' })
+            .to(items[t].link, { '--reverse': '0%', duration: 0.1, ease: 'power2.out' })
+            .to(items[t].link, { '--progress': `${100 - pt * 100}%`, duration: 0.05 + 0.2 * (1 - pt), ease: 'power2.inOut' });
+        }
+      }
+
+      lenis.scrollTo(targetEl, { duration: Math.max(tlNav.duration(), 0.6), lock: true, force: true });
+    };
+
+    const tocLinks = gsap.utils.toArray('.toc a');
+    const onClick = (e) => {
+      e.preventDefault();
+      const el = document.querySelector(e.currentTarget.getAttribute('href'));
+      if (el) goTo(el);
+    };
+    tocLinks.forEach((a) => a.addEventListener('click', onClick));
+
+    return () => {
+      tocLinks.forEach((a) => a.removeEventListener('click', onClick));
+      gsap.ticker.remove(ticker);
+      lenis.destroy();
+      secondSplit.revert();
+      headerSplit.revert();
+    };
+    
+  }, []);
 
 
   return (
@@ -546,30 +743,12 @@ function App() {
         </div>
         <nav className="toc" ref={tocRef}>
           <div className="cross-hair" />
-          <a href="#introduction" className="scramble" id="introduction-link">
-            <span className="primary">Who am I?</span>
-            <span className="secondary" aria-hidden="true">Who am I?</span>
-          </a>
-          <a href="#research" className="scramble" id="research-link">
-            <span className="primary">Research</span>
-            <span className="secondary" aria-hidden="true">Research</span>
-          </a>
-          <a href="#talks-papers" className="scramble" id="talks-papers-link">
-            <span className="primary">Talks & Papers</span>
-            <span className="secondary" aria-hidden="true">Talks & Papers</span>
-          </a>
-          <a href="#projects" className="scramble" id="projects-link">
-            <span className="primary">Projects</span>
-            <span className="secondary" aria-hidden="true">Projects</span>
-          </a>
-          <a href="#academic-journey" className="scramble" id="academic-journey-link">
-            <span className="primary">Academic Journey</span>
-            <span className="secondary" aria-hidden="true">Academic Journey</span>
-          </a>
-          <a href="#certifications" className="scramble" id="certifications-link">
-            <span className="primary">Certifications</span>
-            <span className="secondary" aria-hidden="true">Certifications</span>
-          </a>
+          <a href="#introduction" className="scramble" data-text="Who am I?" id="introduction-link">Who am I?</a>
+          <a href="#research" className="scramble" data-text="Research" id="research-link">Research </a>
+          <a href="#talks-papers" className="scramble" data-text="Talks & Papers" id="talks-papers-link">Talks & Papers </a>
+          <a href="#projects" className="scramble" data-text="Projects" id="projects-link">Projects </a>
+          <a href="#academic-journey" className="scramble" data-text="Academic Journey" id="academic-journey-link">Academic Journey </a>
+          <a href="#certifications" className="scramble" data-text="Certifications" id="certifications-link">Certifications </a>
         </nav>
         <div className="footer" ref={footerRef}>
           <div className="icon-links">
